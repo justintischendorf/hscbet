@@ -22,7 +22,7 @@
     "@repo/pubsub": "workspace:*",
     "better-auth": "^1.7.25",
     "elysia": "latest",
-    "elysia-rate-limit": "^4.6.3",
+    "elysia-rate-limit": "^5.1.2",
     "resend": "^6.38.1"
   },
   "devDependencies": {
