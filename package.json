@@ -5,7 +5,6 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "oxlint apps packages",
-    "lint:turbo": "turbo run lint",
     "check-types": "turbo run check-types",
     "format": "oxlint apps packages --fix-suggestions && oxfmt --write apps packages",
     "format:check": "oxfmt --check apps packages",
