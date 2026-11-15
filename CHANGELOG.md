@@ -21,7 +21,11 @@ und das Projekt folgt dem
   GitHub Actions, die Basis-Images der Dockerfiles und die Images in den
   Compose-Dateien. ([#58])
 - `CHANGELOG.md` und `CONTRIBUTING.md` mit den Regeln für Branches, Commits,
-  Pull Requests, CI und Releases.
+  Pull Requests, CI und Releases. ([#59])
+
+### Geändert
+
+- Das Systemdiagramm in `docs/architecture` zeigt jetzt auch das Rank Module.
 
 ### Behoben
 
@@ -33,6 +37,8 @@ und das Projekt folgt dem
 ### Entfernt
 
 - MIT-Lizenz (`LICENSE`) und der Lizenz-Abschnitt in der README. ([#57])
+- Script `bun lint:turbo`, das wegen der zyklischen Abhängigkeit zwischen
+  `@repo/api` und `@repo/auth` nie lief. Gelintet wird mit `bun lint`. ([#59])
 
 ## [1.0.0] - 2026-10-30
 
@@ -179,3 +185,4 @@ Erstes Release der Tippspiel-Plattform für den HSC 2000 Coburg.
 [#55]: https://github.com/justintischendorf/hscbet/pull/55
 [#57]: https://github.com/justintischendorf/hscbet/pull/57
 [#58]: https://github.com/justintischendorf/hscbet/pull/58
+[#59]: https://github.com/justintischendorf/hscbet/pull/59
