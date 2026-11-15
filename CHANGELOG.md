@@ -8,12 +8,14 @@ and this project adheres to
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-11-16
+
 ### Changed
 
 - Redis now runs on version 8 (development and production). Existing data
   is migrated, but switching back to Redis 7 is no longer possible
   afterwards. ([#72])
-- `CHANGELOG.md` and `CONTRIBUTING.md` are now in English.
+- `CHANGELOG.md` and `CONTRIBUTING.md` are now in English. ([#76])
 
 ## [1.1.0] - 2026-11-15
 
@@ -185,7 +187,8 @@ First release of the prediction game platform for HSC 2000 Coburg.
 - README with guides for development and production, a system diagram and
   `.env.example` files. ([#8], [#53], [#55])
 
-[Unreleased]: https://github.com/justintischendorf/hscbet/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/justintischendorf/hscbet/compare/v1.1.1...HEAD
+[1.1.1]: https://github.com/justintischendorf/hscbet/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/justintischendorf/hscbet/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/justintischendorf/hscbet/releases/tag/v1.0.0
 [#2]: https://github.com/justintischendorf/hscbet/pull/2
@@ -250,3 +253,4 @@ First release of the prediction game platform for HSC 2000 Coburg.
 [#66]: https://github.com/justintischendorf/hscbet/pull/66
 [#67]: https://github.com/justintischendorf/hscbet/pull/67
 [#72]: https://github.com/justintischendorf/hscbet/pull/72
+[#76]: https://github.com/justintischendorf/hscbet/pull/76
