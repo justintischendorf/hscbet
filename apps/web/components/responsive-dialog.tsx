@@ -20,7 +20,6 @@ import {
 } from "@/components/ui/drawer";
 import { useMediaQuery } from "@/hooks/use-media-query";
 
-// dialog on desktop, drawer on mobile
 export function ResponsiveDialog({
   open,
   onOpenChange,

@@ -28,7 +28,6 @@ export function InputProfilePicture({
   removeExisting: boolean;
   onRemoveExistingChange: (remove: boolean) => void;
 }) {
-  // preview of the picked file, only shown while that file is still selected
   const [preview, setPreview] = useState<{ file: File; url: string } | null>(
     null,
   );
@@ -119,11 +118,6 @@ function isSupportedImage(file: File) {
   );
 }
 
-/**
- * Lädt ein ausgewähltes Profilbild erst tatsächlich zu MinIO hoch und
- * hinterlegt es am User. Wird vom aufrufenden Formular erst beim
- * tatsächlichen Speichern aufgerufen, nicht bereits bei der Bildauswahl.
- */
 export async function uploadProfilePicture(
   file: File,
   previousImageUrl: string | null | undefined,

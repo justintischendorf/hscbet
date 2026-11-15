@@ -38,7 +38,6 @@ interface TipDraft {
 }
 
 const AUTO_SAVE_DELAY_MS = 700;
-// how often the page checks whether a game has started and locks its tip
 const NOW_REFRESH_MS = 30_000;
 
 export default function TipsScreen() {
@@ -59,7 +58,6 @@ export default function TipsScreen() {
   }, []);
 
   const [pickedSeasonId, setPickedSeasonId] = useState<string>("");
-  // the newest season is shown until the user picks another one
   const selectedSeasonId = pickedSeasonId || seasonsList[0]?.id || "";
 
   const { data: tipsResponse, isPending: isTipsPending } =

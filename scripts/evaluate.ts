@@ -1,10 +1,6 @@
 import { RankService } from "../apps/api/src/modules/rank/service";
 import { prisma } from "../packages/database/src/index";
 
-// Recalculates tip results and points of all users, e.g. after the scoring
-// rules changed. Used by the seed script, can also be run directly:
-//   bun scripts/evaluate.ts
-
 export async function evaluateAllPoints() {
   const users = await prisma.user.findMany({ select: { id: true } });
 

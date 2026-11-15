@@ -46,7 +46,6 @@ function ActionsMenu({
   onDelete: () => void;
 }) {
   return (
-    // non-modal, otherwise the dialog opened from it leaves the page unclickable
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" aria-label={label}>

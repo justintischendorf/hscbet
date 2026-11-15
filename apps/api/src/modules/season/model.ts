@@ -19,7 +19,6 @@ export namespace SeasonModel {
     guest: t.String({ minLength: 1 }),
   });
 
-  // both points null means the game has no result (yet)
   export const UpdateGame = t.Object({
     date: t.Date(),
     host: t.String({ minLength: 1 }),

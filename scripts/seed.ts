@@ -3,9 +3,6 @@ import { randomBytes, randomUUID, scrypt } from "node:crypto";
 import { prisma } from "../packages/database/src/index";
 import { evaluateAllPoints } from "./evaluate";
 
-// Same scrypt parameters/format better-auth's default email/password hasher
-// uses, so the seeded credential account can log in through the real
-// sign-in flow (apps/web -> better-auth -> Account.password).
 const SCRYPT_CONFIG = { N: 16384, r: 16, p: 1, dkLen: 64 };
 
 function scryptKey(password: string, salt: string): Promise<Buffer> {
@@ -303,7 +300,6 @@ const SEASONS: SeasonSeed[] = [
     to: "2027-06-30",
     league: LEAGUE,
     games: [
-      // gespielt
       {
         date: "2026-07-18T15:30:00Z",
         host: CLUB,
@@ -318,7 +314,6 @@ const SEASONS: SeasonSeed[] = [
         hostPoints: 24,
         guestPoints: 24,
       },
-      // zukünftig, noch ohne Ergebnis
       {
         date: "2026-08-22T15:30:00Z",
         host: CLUB,
@@ -372,20 +367,18 @@ type TipSeed = {
   tipGuest: number;
 };
 
-// Test-Nutzer: 7x exakt (700), 2x Tendenz (100), 2x falsch (-50) -> 750 Punkte -> PLATINUM
 const MAIN_USER_TIPS: TipSeed[] = [
-  { seasonIndex: 0, gameIndex: 0, tipHost: 29, tipGuest: 26 }, // exakt
-  { seasonIndex: 0, gameIndex: 2, tipHost: 27, tipGuest: 27 }, // exakt
-  { seasonIndex: 0, gameIndex: 6, tipHost: 28, tipGuest: 30 }, // falsch (Heimsieg statt Auswärtssieg getippt)
-  { seasonIndex: 1, gameIndex: 1, tipHost: 25, tipGuest: 29 }, // exakt
-  { seasonIndex: 1, gameIndex: 4, tipHost: 34, tipGuest: 24 }, // exakt
-  { seasonIndex: 1, gameIndex: 8, tipHost: 28, tipGuest: 24 }, // Tendenz (Heimsieg, falscher Spielstand)
-  { seasonIndex: 2, gameIndex: 0, tipHost: 28, tipGuest: 24 }, // exakt
-  { seasonIndex: 2, gameIndex: 4, tipHost: 30, tipGuest: 28 }, // exakt
-  { seasonIndex: 2, gameIndex: 8, tipHost: 30, tipGuest: 20 }, // Tendenz (Heimsieg, falscher Spielstand)
-  { seasonIndex: 3, gameIndex: 0, tipHost: 27, tipGuest: 25 }, // exakt
-  { seasonIndex: 3, gameIndex: 1, tipHost: 22, tipGuest: 26 }, // falsch (Auswärtssieg statt Unentschieden getippt)
-  // zukünftige Spiele, noch nicht ausgewertet
+  { seasonIndex: 0, gameIndex: 0, tipHost: 29, tipGuest: 26 },
+  { seasonIndex: 0, gameIndex: 2, tipHost: 27, tipGuest: 27 },
+  { seasonIndex: 0, gameIndex: 6, tipHost: 28, tipGuest: 30 },
+  { seasonIndex: 1, gameIndex: 1, tipHost: 25, tipGuest: 29 },
+  { seasonIndex: 1, gameIndex: 4, tipHost: 34, tipGuest: 24 },
+  { seasonIndex: 1, gameIndex: 8, tipHost: 28, tipGuest: 24 },
+  { seasonIndex: 2, gameIndex: 0, tipHost: 28, tipGuest: 24 },
+  { seasonIndex: 2, gameIndex: 4, tipHost: 30, tipGuest: 28 },
+  { seasonIndex: 2, gameIndex: 8, tipHost: 30, tipGuest: 20 },
+  { seasonIndex: 3, gameIndex: 0, tipHost: 27, tipGuest: 25 },
+  { seasonIndex: 3, gameIndex: 1, tipHost: 22, tipGuest: 26 },
   { seasonIndex: 3, gameIndex: 2, tipHost: 28, tipGuest: 25 },
   { seasonIndex: 3, gameIndex: 3, tipHost: 24, tipGuest: 27 },
   { seasonIndex: 3, gameIndex: 4, tipHost: 30, tipGuest: 26 },
@@ -543,8 +536,6 @@ async function main() {
     demoUsers.push(user);
   }
 
-  // Etwas Tipp-Vielfalt für die Demo-Nutzer über alle Spiele hinweg, damit die
-  // Gruppen-Rangliste und die Tipp-Ansicht gefüllt sind.
   console.log("Erstelle Tipps der Demo-Nutzer ...");
   let globalGameIndex = 0;
   for (let seasonIdx = 0; seasonIdx < seasons.length; seasonIdx++) {
@@ -561,7 +552,7 @@ async function main() {
 
       for (let userIdx = 0; userIdx < demoUsers.length; userIdx++) {
         const mode = (globalGameIndex + userIdx) % 4;
-        if (mode === 3) continue; // dieser Nutzer hat auf dieses Spiel nicht getippt
+        if (mode === 3) continue;
 
         let tipHost: number;
         let tipGuest: number;
@@ -623,8 +614,6 @@ async function main() {
     },
   });
 
-  // Zweite, kleinere Gruppe mit einem anderen Leiter, damit sich der
-  // Favoriten-Wechsel auf dem Dashboard ausprobieren lässt.
   await prisma.group.create({
     data: {
       name: "Büro-Tipprunde",
