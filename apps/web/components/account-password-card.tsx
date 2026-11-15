@@ -2,7 +2,7 @@
 
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -34,14 +34,6 @@ export function AccountPasswordCard() {
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
   const [showChangePasswordConfirm, setShowChangePasswordConfirm] =
     React.useState(false);
-
-  useEffect(() => {
-    if (user) {
-      setCurrentPassword("");
-      setNewPassword("");
-      setConfirmPassword("");
-    }
-  }, [user]);
 
   async function handleUpdatePassword(
     currentPassword: string,

@@ -1,7 +1,7 @@
 "use client";
 
 import { Camera, Trash } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 import { Field } from "@/components/ui/field";
@@ -23,20 +23,15 @@ export function InputGroupPicture({
   fallbackChar: string;
   initialImageUrl?: string;
 }) {
-  const [previewUrl, setPreviewUrl] = useState<string | undefined>(
-    initialImageUrl,
+  // preview of the picked file, only shown while that file is still selected
+  const [preview, setPreview] = useState<{ file: File; url: string } | null>(
+    null,
   );
-
-  useEffect(() => {
-    if (!file) {
-      setPreviewUrl(initialImageUrl);
-      return;
-    }
-
-    const url = URL.createObjectURL(file);
-    setPreviewUrl(url);
-    return () => URL.revokeObjectURL(url);
-  }, [file, initialImageUrl]);
+  const previewUrl = !file
+    ? initialImageUrl
+    : preview?.file === file
+      ? preview.url
+      : undefined;
 
   return (
     <Field className="w-fit items-center gap-6">
@@ -69,6 +64,13 @@ export function InputGroupPicture({
                   return;
                 }
 
+                const reader = new FileReader();
+                reader.onload = () => {
+                  if (typeof reader.result === "string") {
+                    setPreview({ file: selected, url: reader.result });
+                  }
+                };
+                reader.readAsDataURL(selected);
                 onFileChange(selected);
               }}
             />

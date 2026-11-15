@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import {
   Combobox,
@@ -48,7 +48,9 @@ export default function GroupStats() {
     });
   }, [groupResponse?.data?.group?.members]);
 
-  const [selectedSeasonId, setSelectedSeasonId] = useState<string>("");
+  const [pickedSeasonId, setPickedSeasonId] = useState<string>("");
+  // the newest season is shown until the user picks another one
+  const selectedSeasonId = pickedSeasonId || seasonsList[0]?.id || "";
 
   const currentSeason = seasonsList.find((s) => s.id === selectedSeasonId);
 
@@ -61,12 +63,6 @@ export default function GroupStats() {
   const selectedSeasonTitle = currentSeason?.title ?? "";
 
   const gamesList = currentSeason?.game ?? [];
-
-  useEffect(() => {
-    if (seasonsList.length > 0 && !selectedSeasonId) {
-      setSelectedSeasonId(seasonsList[0].id);
-    }
-  }, [seasonsList, selectedSeasonId]);
 
   return (
     <main className="w-full sm:py-16 py-8 px-4 md:px-12 sm:px-6">
@@ -84,7 +80,7 @@ export default function GroupStats() {
             items={seasonsList}
             disabled={isSeasonsPending}
             value={selectedSeasonId}
-            onValueChange={(val) => setSelectedSeasonId(val ?? "")}
+            onValueChange={(val) => setPickedSeasonId(val ?? "")}
           >
             <ComboboxInput
               placeholder="Wähle eine Saison"

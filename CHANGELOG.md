@@ -41,6 +41,18 @@ und das Projekt folgt dem
 
 ### Behoben
 
+- Die Warnungen der neuen React-Regeln von oxlint 1.93 behoben. Die
+  ausgewählte Saison (Saison, Tipps, Gruppe) und der Dialog zur
+  E-Mail-Bestätigung werden beim Rendern abgeleitet statt in einem Effect
+  gesetzt. Die Bildvorschau beim Profil- und Gruppenbild entsteht direkt
+  beim Auswählen der Datei.
+- Der Dialog zur E-Mail-Bestätigung öffnet sich nach dem Schließen nicht
+  mehr erneut, wenn die Session neu geladen wird.
+- Eingaben im Passwort-Formular und in den Konto-Daten werden nicht mehr
+  zurückgesetzt, wenn die Session neu geladen wird (z. B. beim Wechsel
+  zurück in den Tab).
+- Tipps auf der Tipp-Seite sperren sich beim Anpfiff jetzt auch ohne
+  Neuladen der Seite (Prüfung alle 30 Sekunden).
 - `bun run check-types` und `bun run build` warten auf
   `@repo/database#generate`. Vorher liefen Packages wie `worker` und
   `treaty` parallel dazu und fanden den generierten Prisma Client nicht,
