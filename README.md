@@ -28,6 +28,7 @@ Tippspiel-Plattform für den HSC 2000 Coburg. Das Projekt ist ein [Turborepo](ht
 | `packages/logger`   | Gemeinsamer Logger                                         |
 | `scripts`           | Seed- und Admin-Scripts für die Datenbank                  |
 | `docs/architecture` | Systemdiagramm                                             |
+| `.github`           | CI, Release-PR-Workflow und Dependabot                     |
 
 ## Architektur
 
@@ -262,14 +263,16 @@ docker compose -f docker-compose-dev.yml down
 
 ### Vor einem Pull Request
 
-Die CI prüft Linting und Formatierung. Lokal vorab:
+Die CI prüft Formatierung, Linting, Typen und den Build. Lokal vorab:
 
 ```sh
-bun lint
-bun run oxfmt --check apps packages
+bun run format:check
+bun run lint
+bun run check-types
+bun run build
 ```
 
-Bei Formatierungsfehlern hilft `bun format`.
+Bei Formatierungsfehlern hilft `bun format`. Regeln für Branches, Commits, Pull Requests und Releases stehen in der [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
 
@@ -422,7 +425,7 @@ docker compose -f docker-compose-prod.yml exec api bun /app/scripts/admin.ts du@
 
 ### Betrieb
 
-**Update auf eine neue Version.** Migrationen laufen dabei automatisch, die Daten bleiben erhalten:
+**Update auf eine neue Version.** `main` enthält immer das letzte Release, was sich geändert hat, steht in der [CHANGELOG.md](CHANGELOG.md). Migrationen laufen dabei automatisch, die Daten bleiben erhalten:
 
 ```sh
 git pull
@@ -486,6 +489,7 @@ docker run --rm -v hscbet-prod_minio_data:/data -v "$PWD":/backup alpine tar xzf
 | `bun db:studio`        | Öffnet Prisma Studio zum Ansehen und Bearbeiten der Datenbank        |
 | `bun lint`             | Lintet den Code mit oxlint                                           |
 | `bun format`           | Formatiert den Code mit oxlint und oxfmt                             |
+| `bun format:check`     | Prüft die Formatierung, ohne Dateien zu ändern                       |
 | `bun check-types`      | Prüft die TypeScript-Typen in allen Packages                         |
 
 `bun docker:prod` ist eine Abkürzung für `docker compose -f docker-compose-prod.yml up --build -d`. Auf einem Server ohne Bun den Befehl direkt verwenden.
@@ -510,3 +514,7 @@ Bei Problemen zuerst die Logs ansehen: `docker compose -f docker-compose-prod.ym
 - **Bilder laden nicht oder Upload schlägt fehl:** `MINIO_PUBLIC_ENDPOINT` prüfen. Die Adresse muss aus dem Browser erreichbar sein und im Reverse Proxy auf Port 9000 zeigen.
 - **Keine Freigabe-Mail nach der Registrierung:** `RESEND_API_KEY`, `RESEND_MAIL_ADDRESS` und `SIGNUP_REVIEW_MAIL_ADDRESS` prüfen. Die Absender-Domain muss bei Resend verifiziert sein. Fehler stehen in `docker compose -f docker-compose-prod.yml logs api`.
 - **`migrate` endet nicht mit `exited (0)`:** `docker compose -f docker-compose-prod.yml logs migrate` zeigt den Fehler.
+
+## Mitwirken
+
+Änderungen kommen per Pull Request nach `develop` und von dort mit einem Release nach `main`. Branch-Namen, Commit-Format, CI und den Release-Ablauf beschreibt die [CONTRIBUTING.md](CONTRIBUTING.md). Alle Versionen und ihre Änderungen stehen in der [CHANGELOG.md](CHANGELOG.md).
