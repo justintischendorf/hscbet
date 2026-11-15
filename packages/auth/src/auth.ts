@@ -64,7 +64,6 @@ export const auth = betterAuth({
             },
           });
 
-          // new accounts start unapproved, admin decides via review mail
           await MailService.sendSignupReviewMail({
             body: { userId: user.id, name: user.name, email: user.email },
           });
@@ -127,7 +126,6 @@ export const auth = betterAuth({
   },
   emailAndPassword: {
     enabled: true,
-    // no session on signup, account has to be approved first
     autoSignIn: false,
   },
   baseURL: process.env.BETTER_AUTH_URL,

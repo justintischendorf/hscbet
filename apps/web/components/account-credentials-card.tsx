@@ -57,8 +57,6 @@ export function AccountCredentialsCard({
     },
   });
 
-  // take over a changed name or email (e.g. after saving), adjusted during
-  // render instead of in an effect, see https://react.dev/learn/you-might-not-need-an-effect
   const [syncedUser, setSyncedUser] = React.useState({
     name: user?.name,
     email: user?.email,

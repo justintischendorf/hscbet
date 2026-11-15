@@ -43,7 +43,6 @@ export function SignupForm({
       return;
     }
 
-    // account is created unapproved, admin gets the review mail
     const { error: signupError } = await authClient.signUp.email({
       name: username,
       email: email,

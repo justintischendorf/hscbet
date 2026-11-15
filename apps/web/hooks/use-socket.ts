@@ -110,7 +110,6 @@ async function handleNotificationUpdate(
       await queryClient.invalidateQueries({ queryKey: seasonsQueryKey });
       break;
     case "season_changed":
-      // a deleted season removes its tips, so points have to be re-evaluated
       await queryClient.invalidateQueries({ queryKey: seasonsQueryKey });
       await apiClient.api.rank["evaluate-points"].patch();
       await queryClient.invalidateQueries({ queryKey: seasonStatsQueryKey });

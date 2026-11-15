@@ -36,8 +36,6 @@ export default function SeasonScreen() {
   const [pickedSeasonId, setPickedSeasonId] = useState<string>("");
   const isAdmin = useIsAdmin();
 
-  // the newest season is shown until the user picks another one, and again
-  // when the picked one was deleted
   const selectedSeasonId = seasonsList.some((s) => s.id === pickedSeasonId)
     ? pickedSeasonId
     : (seasonsList[0]?.id ?? "");

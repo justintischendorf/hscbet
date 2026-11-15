@@ -48,7 +48,6 @@ function isLeague(value: string): value is League {
   return (LEAGUES as readonly string[]).includes(value);
 }
 
-// derives the next title from the latest season, e.g. "Saison 2026/2027" -> "Saison 2027/28"
 function getNextSeasonTitle(seasons: { title: string; from: Date }[]) {
   const latest = [...seasons].sort(
     (a, b) => new Date(b.from).getTime() - new Date(a.from).getTime(),
@@ -60,7 +59,6 @@ function getNextSeasonTitle(seasons: { title: string; from: Date }[]) {
     startYear =
       (match ? Number(match[1]) : new Date(latest.from).getFullYear()) + 1;
   } else {
-    // seasons start in summer, before July the current season began last year
     const now = new Date();
     startYear = now.getMonth() >= 6 ? now.getFullYear() : now.getFullYear() - 1;
   }
@@ -73,7 +71,6 @@ export function NewSeasonPopup() {
   const [open, setOpen] = React.useState(false);
   const isAdmin = useIsAdmin();
 
-  // the API enforces this as well, hiding the button is only for the UI
   if (!isAdmin) return null;
 
   return (
@@ -220,7 +217,6 @@ function SeasonForm({
             onValueChange={(val) => setLeague(val)}
           >
             <ComboboxInput id="league" placeholder="Wähle eine Liga" />
-            {/* render inside the dialog, the modal dialog blocks clicks on portals in body */}
             <ComboboxContent container={portalRef}>
               <ComboboxList>
                 {(item: League) => (
@@ -270,7 +266,6 @@ function SeasonForm({
           </Popover>
         </Field>
       </div>
-      {/* out of flow, so the portal's wrapper doesn't add grid rows and shift the dialog */}
       <div ref={portalRef} className="absolute" />
       <Button type="submit" disabled={isSavingSeason}>
         {isSavingSeason && <Spinner />}

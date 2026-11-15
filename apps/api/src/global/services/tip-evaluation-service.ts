@@ -10,11 +10,6 @@ type ScoredTip = {
 };
 
 export abstract class TipEvaluationService {
-  // scores all tips of one finished game against each other:
-  // - exact goal difference: 2 points, 1 point each if several players hit it
-  // - nobody hit the difference: the player(s) whose difference is closest get
-  //   1 point, 0.5 points each if several players share the closest distance
-  // returns the points per tip id, tips without points are mapped to 0
   static scoreGameTips({
     hostPoints,
     guestPoints,

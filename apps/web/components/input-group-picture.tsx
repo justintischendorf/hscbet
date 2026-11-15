@@ -23,7 +23,6 @@ export function InputGroupPicture({
   fallbackChar: string;
   initialImageUrl?: string;
 }) {
-  // preview of the picked file, only shown while that file is still selected
   const [preview, setPreview] = useState<{ file: File; url: string } | null>(
     null,
   );
@@ -106,11 +105,6 @@ function isSupportedImage(file: File) {
   );
 }
 
-/**
- * Lädt ein ausgewähltes Gruppenbild erst tatsächlich zu MinIO hoch. Wird vom
- * aufrufenden Formular erst beim tatsächlichen Erstellen der Gruppe
- * aufgerufen, nicht bereits bei der Bildauswahl.
- */
 export async function uploadGroupPicture(
   file: File,
   getPresignedUrl: (input: {
@@ -152,7 +146,6 @@ export async function uploadGroupPicture(
       body: file,
     });
 
-    // fetch only rejects on network errors, S3 errors (e.g. NoSuchBucket) come back as a response
     if (!uploadResponse.ok) {
       toast.error("Failed to upload file: HTTP " + uploadResponse.status);
       return;

@@ -41,6 +41,11 @@ und das Projekt folgt dem
 
 ### Behoben
 
+- Das Logo fehlte auf verschachtelten Seiten wie `/groups/[id]`, weil die
+  Bildpfade relativ statt absolut waren.
+- Auf der Kontoseite hatten die Passwortfelder zum Ändern des Passworts und
+  zum Löschen des Accounts dieselbe ID, sodass ein Klick auf das Label das
+  falsche Feld auswählen konnte.
 - Die Warnungen der neuen React-Regeln von oxlint 1.93 behoben. Die
   ausgewählte Saison (Saison, Tipps, Gruppe) und der Dialog zur
   E-Mail-Bestätigung werden beim Rendern abgeleitet statt in einem Effect

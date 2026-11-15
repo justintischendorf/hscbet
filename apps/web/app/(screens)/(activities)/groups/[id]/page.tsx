@@ -49,7 +49,6 @@ export default function GroupStats() {
   }, [groupResponse?.data?.group?.members]);
 
   const [pickedSeasonId, setPickedSeasonId] = useState<string>("");
-  // the newest season is shown until the user picks another one
   const selectedSeasonId = pickedSeasonId || seasonsList[0]?.id || "";
 
   const currentSeason = seasonsList.find((s) => s.id === selectedSeasonId);
