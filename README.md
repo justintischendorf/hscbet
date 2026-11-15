@@ -488,6 +488,7 @@ docker run --rm -v hscbet-prod_minio_data:/data -v "$PWD":/backup alpine tar xzf
 | `bun db:admin <email>` | Vergibt Admin-Rechte (`--revoke` entzieht sie)                       |
 | `bun db:studio`        | Öffnet Prisma Studio zum Ansehen und Bearbeiten der Datenbank        |
 | `bun lint`             | Lintet den Code mit oxlint                                           |
+| `bun lint:fix`         | Behebt automatisch behebbare Lint-Fehler, z. B. ungenutzte Imports   |
 | `bun format`           | Formatiert den Code mit oxlint und oxfmt                             |
 | `bun format:check`     | Prüft die Formatierung, ohne Dateien zu ändern                       |
 | `bun check-types`      | Prüft die TypeScript-Typen in allen Packages                         |
