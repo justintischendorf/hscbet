@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useState } from "react";
 
 import { CLUB, NewGamePopup } from "@/components/new-game-popup";
 import { NewSeasonPopup } from "@/components/new-season-popup";
@@ -33,16 +33,12 @@ export default function SeasonScreen() {
   const { data: seasonsResponse, isPending: isSeasonsPending } = useSeasons();
   const seasonsData = seasonsResponse?.data?.season;
   const seasonsList = seasonsData ?? [];
-  const [selectedSeasonId, setSelectedSeasonId] = useState<string>("");
+  const [pickedSeasonId, setPickedSeasonId] = useState<string>("");
   const isAdmin = useIsAdmin();
 
-  // also falls back to the newest season when the selected one was deleted
-  useEffect(() => {
-    if (!seasonsData) return;
-    if (!seasonsData.some((s) => s.id === selectedSeasonId)) {
-      setSelectedSeasonId(seasonsData[0]?.id ?? "");
-    }
-  }, [seasonsData, selectedSeasonId]);
+  const selectedSeasonId = seasonsList.some((s) => s.id === pickedSeasonId)
+    ? pickedSeasonId
+    : (seasonsList[0]?.id ?? "");
 
   const currentSeason = seasonsList.find((s) => s.id === selectedSeasonId);
   const selectedSeasonTitle = currentSeason?.title || "";
@@ -95,7 +91,7 @@ export default function SeasonScreen() {
               items={seasonsList}
               disabled={isSeasonsPending}
               value={selectedSeasonId}
-              onValueChange={(val) => setSelectedSeasonId(val ?? "")}
+              onValueChange={(val) => setPickedSeasonId(val ?? "")}
             >
               <ComboboxInput
                 className="flex-1"

@@ -14,7 +14,6 @@ function assertAdmin(user: { role?: string | null }) {
   }
 }
 
-// season.to is the start of the last day, games on that day are still allowed
 function isWithinSeason(date: Date, season: { from: Date; to: Date }) {
   return date >= season.from && date.getTime() < season.to.getTime() + DAY_MS;
 }
@@ -255,7 +254,6 @@ export abstract class SeasonService {
           tip.game.guestPoints !== null,
       );
 
-      // a tip counts as correct once it scored points
       const correct = evaluatedTips.filter(
         (tip) => (tip.result ?? 0) > 0,
       ).length;

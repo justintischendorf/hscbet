@@ -11,7 +11,6 @@ export abstract class RankService {
   static async evaluatePoints({ user }: { user: { id: string } }) {
     logger.info("updating points in the database for user with id: " + user.id);
 
-    // points depend on the other tips of the same game, so all of them are loaded
     const tips = await prisma.tip.findMany({
       where: { userId: user.id },
       include: {

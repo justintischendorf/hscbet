@@ -13,17 +13,17 @@
   },
   "dependencies": {
     "@elysia/cron": "^1.4.2",
-    "@elysiajs/cors": "^1.4.2",
+    "@elysiajs/cors": "^1.4.3",
     "@repo/auth": "workspace:*",
     "@repo/bucket": "workspace:*",
     "@repo/database": "workspace:*",
     "@repo/logger": "workspace:*",
     "@repo/queue": "workspace:*",
     "@repo/pubsub": "workspace:*",
-    "better-auth": "^1.6.20",
+    "better-auth": "^1.7.25",
     "elysia": "latest",
-    "elysia-rate-limit": "^4.6.2",
-    "resend": "^6.17.2"
+    "elysia-rate-limit": "^4.6.3",
+    "resend": "^6.38.1"
   },
   "devDependencies": {
     "bun-types": "latest"

@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
-import React, { useEffect } from "react";
+import React from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -57,13 +57,19 @@ export function AccountCredentialsCard({
     },
   });
 
-  useEffect(() => {
-    if (user) {
-      setUsername(user.name || "");
-      setUsernameAvailable(MAX_USERNAME_LENGTH - (user.name?.length ?? 0));
-      setEmail(user.email || "");
-    }
-  }, [user]);
+  const [syncedUser, setSyncedUser] = React.useState({
+    name: user?.name,
+    email: user?.email,
+  });
+  if (
+    user &&
+    (user.name !== syncedUser.name || user.email !== syncedUser.email)
+  ) {
+    setSyncedUser({ name: user.name, email: user.email });
+    setUsername(user.name || "");
+    setUsernameAvailable(MAX_USERNAME_LENGTH - (user.name?.length ?? 0));
+    setEmail(user.email || "");
+  }
 
   async function handleUpdateUserCredentials(username: string, email: string) {
     setIsSubmitting(true);

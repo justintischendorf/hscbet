@@ -1,7 +1,7 @@
 "use client";
 
 import { Camera, Trash } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 import { Field } from "@/components/ui/field";
@@ -23,20 +23,14 @@ export function InputGroupPicture({
   fallbackChar: string;
   initialImageUrl?: string;
 }) {
-  const [previewUrl, setPreviewUrl] = useState<string | undefined>(
-    initialImageUrl,
+  const [preview, setPreview] = useState<{ file: File; url: string } | null>(
+    null,
   );
-
-  useEffect(() => {
-    if (!file) {
-      setPreviewUrl(initialImageUrl);
-      return;
-    }
-
-    const url = URL.createObjectURL(file);
-    setPreviewUrl(url);
-    return () => URL.revokeObjectURL(url);
-  }, [file, initialImageUrl]);
+  const previewUrl = !file
+    ? initialImageUrl
+    : preview?.file === file
+      ? preview.url
+      : undefined;
 
   return (
     <Field className="w-fit items-center gap-6">
@@ -69,6 +63,13 @@ export function InputGroupPicture({
                   return;
                 }
 
+                const reader = new FileReader();
+                reader.onload = () => {
+                  if (typeof reader.result === "string") {
+                    setPreview({ file: selected, url: reader.result });
+                  }
+                };
+                reader.readAsDataURL(selected);
                 onFileChange(selected);
               }}
             />
@@ -104,11 +105,6 @@ function isSupportedImage(file: File) {
   );
 }
 
-/**
- * Lädt ein ausgewähltes Gruppenbild erst tatsächlich zu MinIO hoch. Wird vom
- * aufrufenden Formular erst beim tatsächlichen Erstellen der Gruppe
- * aufgerufen, nicht bereits bei der Bildauswahl.
- */
 export async function uploadGroupPicture(
   file: File,
   getPresignedUrl: (input: {
@@ -150,7 +146,6 @@ export async function uploadGroupPicture(
       body: file,
     });
 
-    // fetch only rejects on network errors, S3 errors (e.g. NoSuchBucket) come back as a response
     if (!uploadResponse.ok) {
       toast.error("Failed to upload file: HTTP " + uploadResponse.status);
       return;

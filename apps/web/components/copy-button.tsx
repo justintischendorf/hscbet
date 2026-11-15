@@ -69,7 +69,7 @@ export default function CopyButton(props: {
 
     for (let i = 0; i < count; i++) {
       const angle = (-90 + (Math.random() - 0.5) * SPREAD) * (Math.PI / 180);
-      const speed = 200 + Math.random() * 260; // px/s
+      const speed = 200 + Math.random() * 260;
       const vx = Math.cos(angle) * speed * (0.8 + Math.random() * 0.8);
       const vy = Math.sin(angle) * speed * (0.8 + Math.random() * 0.8);
       const size = 6 + Math.random() * 8;

@@ -80,10 +80,10 @@ export default function AccountDeleteCard() {
         <CardContent>
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
-              <Label htmlFor="currentPassword">Aktuelles Passwort</Label>
+              <Label htmlFor="deleteAccountPassword">Aktuelles Passwort</Label>
               <div className="relative">
                 <Input
-                  id="currentPassword"
+                  id="deleteAccountPassword"
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}

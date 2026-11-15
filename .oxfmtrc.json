@@ -4,7 +4,22 @@
   "singleQuote": false,
   "sortPackageJson": false,
   "sortImports": {
-    "internalPattern": ["~/", "@/", "@repo/"]
+    "internalPattern": ["~/", "@/", "@repo/"],
+    "newlinesBetween": true,
+    "groups": [
+      "builtin",
+      "external",
+      ["internal", "subpath"],
+      ["parent", "sibling", "index"],
+      "style",
+      "unknown"
+    ]
   },
-  "ignorePatterns": []
+  "ignorePatterns": [
+    "**/dist/**",
+    "**/coverage/**",
+    "**/.next/**",
+    "**/generated/**",
+    "bun.lock"
+  ]
 }

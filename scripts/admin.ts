@@ -1,9 +1,5 @@
 import { prisma } from "../packages/database/src/index";
 
-// Usage:
-//   bun db:admin user@example.com
-//   bun db:admin --revoke user@example.com
-
 async function main() {
   const args = process.argv.slice(2);
   const revoke = args.includes("--revoke");

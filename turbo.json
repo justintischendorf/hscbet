@@ -9,15 +9,12 @@
       "outputs": ["generated/**"]
     },
     "build": {
-      "dependsOn": ["generate"],
+      "dependsOn": ["@repo/database#generate"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": [".next/**", "!.next/cache/**", "!.next/dev/**"]
     },
-    "lint": {
-      "dependsOn": ["^lint"]
-    },
     "check-types": {
-      "dependsOn": ["generate"]
+      "dependsOn": ["@repo/database#generate"]
     },
     "dev": {
       "cache": false,

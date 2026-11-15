@@ -3,11 +3,6 @@ import { fileURLToPath } from "node:url";
 
 const packageDir = join(dirname(fileURLToPath(import.meta.url)), "..");
 
-/**
- * Löst relative SQLite-Pfade (z. B. "file:./data/hscbet.db") relativ zum
- * Database-Package auf, damit API, Web, Scripts und Prisma CLI unabhängig
- * vom aktuellen Arbeitsverzeichnis dieselbe Datei verwenden.
- */
 export function resolveDatabaseUrl(url: string): string {
   if (!url.startsWith("file:")) return url;
 

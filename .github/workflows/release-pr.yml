@@ -1,0 +1,68 @@
+name: Release PR
+
+# Fills the description of every new PR into main with
+# .github/release_pr_template.md, including the list of changes.
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  fill-description:
+    name: Fill release description
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Build description
+        env:
+          # Passed via env, never inlined into the script (untrusted input)
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          # Keep a description that was written by hand
+          if [ -n "$(printf '%s' "$PR_BODY" | tr -d '[:space:]')" ]; then
+            echo "Description is not empty, leaving it as is."
+            exit 0
+          fi
+
+          # Version from the PR title (e.g. "v0.1.0"), placeholder otherwise
+          version=$(printf '%s' "$PR_TITLE" | grep -oE '^v?[0-9]+\.[0-9]+\.[0-9]+' || true)
+          version=${version:-vX.Y.Z}
+          case "$version" in v*) ;; *) version="v$version" ;; esac
+
+          git log --no-merges --format='- %s' "$BASE_SHA..$HEAD_SHA" > changes.md
+          [ -s changes.md ] || echo "-" > changes.md
+
+          python3 - "$version" <<'EOF'
+          import re, sys
+          version = sys.argv[1]
+          template = open(".github/release_pr_template.md").read()
+          changes = open("changes.md").read().rstrip("\n")
+          body = template.replace("vX.Y.Z", version)
+          # Replace the "One line per squashed commit" hint and the empty bullet
+          body = re.sub(r"<!-- One line per squashed commit.*?-->\s*\n-\s*$",
+                        changes + "\n", body, flags=re.S | re.M)
+          open("body.md", "w").write(body)
+          EOF
+
+          echo "FILL=true" >> "$GITHUB_ENV"
+          cat body.md
+
+      - name: Update PR description
+        if: env.FILL == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: gh pr edit "$PR_NUMBER" --body-file body.md

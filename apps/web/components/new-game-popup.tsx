@@ -41,7 +41,6 @@ export function NewGamePopup({ season }: { season: Season | undefined }) {
   const [open, setOpen] = React.useState(false);
   const isAdmin = useIsAdmin();
 
-  // the API enforces this as well, hiding the button is only for the UI
   if (!isAdmin || !season) return null;
 
   return (

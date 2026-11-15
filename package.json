@@ -5,9 +5,10 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "oxlint apps packages",
-    "lint:turbo": "turbo run lint",
+    "lint:fix": "oxlint apps packages --fix",
     "check-types": "turbo run check-types",
     "format": "oxlint apps packages --fix-suggestions && oxfmt --write apps packages",
+    "format:check": "oxfmt --check apps packages",
     "docker:dev": "docker compose -f docker-compose-dev.yml up --build -d",
     "docker:prod": "docker compose -f docker-compose-prod.yml up --build -d",
     "db:studio": "cd packages/database && bun prisma studio",
@@ -18,17 +19,15 @@
     "db:admin": "bun scripts/admin.ts"
   },
   "devDependencies": {
-    "prettier": "^3.7.4",
-    "turbo": "^2.9.18",
-    "typescript": "6.0.3",
-    "oxfmt": "^0.47.0",
-    "oxlint": "^1.62.0",
-    "prettier-plugin-tailwindcss": "^0.8.0"
+    "oxfmt": "^0.78.0",
+    "oxlint": "^1.93.0",
+    "turbo": "^2.11.11",
+    "typescript": "7.0.2"
   },
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "bun@1.4.2",
+  "packageManager": "bun@1.4.4",
   "workspaces": [
     "apps/*",
     "packages/*"

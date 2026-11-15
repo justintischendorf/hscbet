@@ -15,7 +15,6 @@ export class QueueManager {
     };
   }
 
-  // --------------------------------------------------------------------------> produce
   async produce({
     topic,
     payload,
@@ -28,7 +27,6 @@ export class QueueManager {
     await this.queues[topic].add(payload.eventType, payload);
   }
 
-  // --------------------------------------------------------------------------> consume
   consume<K extends keyof TopicPayloadMap>({
     topic,
     callback,

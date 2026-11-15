@@ -25,8 +25,6 @@ function ReviewSignup() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [done, setDone] = useState(false);
 
-  // explicit button instead of reviewing on page load, so mail link scanners
-  // can't approve or reject users by prefetching the link
   async function handleReview() {
     if (!token) return;
 

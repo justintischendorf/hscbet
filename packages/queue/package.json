@@ -13,9 +13,10 @@
     "@types/bun": "latest"
   },
   "peerDependencies": {
-    "typescript": "^6"
+    "typescript": "^7"
   },
   "dependencies": {
-    "bullmq": "^5.80.2"
+    "bullmq": "^6.7.6",
+    "ioredis": "6.0.0"
   }
 }

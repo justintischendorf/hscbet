@@ -44,17 +44,12 @@ export default function DashboardScreen() {
   const user = session?.data?.user;
   const mailVerified = session?.data?.user?.emailVerified;
 
-  const [showVerifyDialog, setShowVerifyDialog] = useState(false);
+  const [verifyDialogDismissed, setVerifyDialogDismissed] = useState(false);
+  const showVerifyDialog = !!user && !mailVerified && !verifyDialogDismissed;
   const [isSendingCode, setIsSendingCode] = useState(false);
   const [codeSent, setCodeSent] = useState(false);
   const [otp, setOtp] = useState("");
   const [resendCooldown, setResendCooldown] = useState(0);
-
-  useEffect(() => {
-    if (user && !mailVerified) {
-      setShowVerifyDialog(true);
-    }
-  }, [user, mailVerified]);
 
   useEffect(() => {
     if (resendCooldown === 0) return;
@@ -103,7 +98,7 @@ export default function DashboardScreen() {
     }
 
     toast.success("E-Mail-Adresse erfolgreich bestätigt!");
-    setShowVerifyDialog(false);
+    setVerifyDialogDismissed(true);
   }
 
   useEffect(() => {
@@ -166,7 +161,10 @@ export default function DashboardScreen() {
         </div>
       </div>
 
-      <Dialog open={showVerifyDialog} onOpenChange={setShowVerifyDialog}>
+      <Dialog
+        open={showVerifyDialog}
+        onOpenChange={(open) => setVerifyDialogDismissed(!open)}
+      >
         <DialogContent>
           <DialogHeader>
             <div className="mb-1 flex size-11 items-center justify-center rounded-full bg-huk-accent">
