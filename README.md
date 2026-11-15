@@ -42,7 +42,7 @@ Das Frontend spricht die API über den typisierten Treaty-Client an. Die API-Mod
 
 ### Voraussetzungen
 
-- [Bun](https://bun.sh/) in der Version aus `package.json` (`packageManager`, aktuell `1.4.2`)
+- [Bun](https://bun.sh/) in der Version aus `package.json` (`packageManager`, aktuell `1.4.4`)
 - [Docker Desktop](https://www.docker.com/) inklusive Docker Compose. Docker muss laufen, bevor `bun docker:dev` ausgeführt wird.
 
 ### Einrichtung

@@ -13,10 +13,10 @@
     "@types/bun": "latest"
   },
   "peerDependencies": {
-    "typescript": "^6"
+    "typescript": "^7"
   },
   "dependencies": {
-    "better-auth": "^1.6.20",
+    "better-auth": "^1.7.25",
     "@repo/api": "workspace:*",
     "@repo/database": "workspace:*"
   }
