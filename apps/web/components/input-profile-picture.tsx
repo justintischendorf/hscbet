@@ -1,7 +1,7 @@
 "use client";
 
 import { Camera, Trash } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 import { Field } from "@/components/ui/field";
@@ -28,18 +28,11 @@ export function InputProfilePicture({
   removeExisting: boolean;
   onRemoveExistingChange: (remove: boolean) => void;
 }) {
-  const [previewUrl, setPreviewUrl] = useState<string | undefined>();
-
-  useEffect(() => {
-    if (!file) {
-      setPreviewUrl(undefined);
-      return;
-    }
-
-    const url = URL.createObjectURL(file);
-    setPreviewUrl(url);
-    return () => URL.revokeObjectURL(url);
-  }, [file]);
+  // preview of the picked file, only shown while that file is still selected
+  const [preview, setPreview] = useState<{ file: File; url: string } | null>(
+    null,
+  );
+  const previewUrl = file && preview?.file === file ? preview.url : undefined;
 
   const displayImageUrl =
     previewUrl ?? (removeExisting ? undefined : (currentImageUrl ?? undefined));
@@ -75,6 +68,13 @@ export function InputProfilePicture({
                   return;
                 }
 
+                const reader = new FileReader();
+                reader.onload = () => {
+                  if (typeof reader.result === "string") {
+                    setPreview({ file: selected, url: reader.result });
+                  }
+                };
+                reader.readAsDataURL(selected);
                 onFileChange(selected);
                 onRemoveExistingChange(false);
               }}

@@ -38,6 +38,8 @@ interface TipDraft {
 }
 
 const AUTO_SAVE_DELAY_MS = 700;
+// how often the page checks whether a game has started and locks its tip
+const NOW_REFRESH_MS = 30_000;
 
 export default function TipsScreen() {
   const { data: session } = useSession();
@@ -49,13 +51,16 @@ export default function TipsScreen() {
     return seasonsResponse?.data?.season ?? [];
   }, [seasonsResponse?.data?.season]);
 
-  const [selectedSeasonId, setSelectedSeasonId] = useState<string>("");
+  const [now, setNow] = useState(() => Date.now());
 
   useEffect(() => {
-    if (seasonsList.length > 0 && !selectedSeasonId) {
-      setSelectedSeasonId(seasonsList[0].id);
-    }
-  }, [seasonsList, selectedSeasonId]);
+    const timer = setInterval(() => setNow(Date.now()), NOW_REFRESH_MS);
+    return () => clearInterval(timer);
+  }, []);
+
+  const [pickedSeasonId, setPickedSeasonId] = useState<string>("");
+  // the newest season is shown until the user picks another one
+  const selectedSeasonId = pickedSeasonId || seasonsList[0]?.id || "";
 
   const { data: tipsResponse, isPending: isTipsPending } =
     useTips(selectedSeasonId);
@@ -171,7 +176,7 @@ export default function TipsScreen() {
             items={seasonsList}
             disabled={isSeasonsPending}
             value={selectedSeasonId}
-            onValueChange={(val) => setSelectedSeasonId(val ?? "")}
+            onValueChange={(val) => setPickedSeasonId(val ?? "")}
           >
             <ComboboxInput
               placeholder="Wähle eine Saison"
@@ -208,8 +213,7 @@ export default function TipsScreen() {
               <TableBody>
                 {gamesList.map((game) => {
                   const myTip = myTips.get(game.id) ?? null;
-                  const hasStarted =
-                    new Date(game.date).getTime() <= Date.now();
+                  const hasStarted = new Date(game.date).getTime() <= now;
 
                   if (hasStarted) {
                     return (
