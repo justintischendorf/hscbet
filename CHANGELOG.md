@@ -26,6 +26,10 @@ und das Projekt folgt dem
 
 ### Geändert
 
+- Die README ist jetzt auf Englisch, deutlich kürzer und grob an ghostlyjs
+  angelehnt: Systemdiagramm, eine Tabelle mit allen
+  `.env`-Variablen für Development und Production sowie kompakte
+  Anleitungen für beide Umgebungen.
 - Neues animiertes Logo: eine Anzeigetafel in Gelb und Navy, deren
   Doppelpunkt blinkt. Wer im System „Bewegung reduzieren“
   eingestellt hat, sieht ein stehendes Logo. Der Header zeigt jetzt im hellen

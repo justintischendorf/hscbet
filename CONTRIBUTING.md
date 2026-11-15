@@ -2,7 +2,7 @@
 
 Diese Datei beschreibt, wie Änderungen in das Projekt kommen: Branches,
 Commits, Pull Requests, CI und Releases. Wie man das Projekt lokal aufsetzt,
-steht in der [README](README.md#development-lokal).
+steht in der [README](README.md#development).
 
 ## Überblick
 
@@ -117,7 +117,7 @@ Formatierungsfehler behebt `bun format`.
 
 Bei Änderungen am Datenbankschema die neue Migration aus
 `packages/database/prisma/migrations/` mit committen (siehe
-[Schema ändern](README.md#schema-ändern)).
+[Schema ändern](README.md#changing-the-schema)).
 
 ## CI
 
@@ -171,8 +171,6 @@ reine Fehlerbehebungen.
    release** den Tag `v1.1.0` auf `main` anlegen. Als Text den Abschnitt der
    Version aus der `CHANGELOG.md` übernehmen. Tags `v*` sind geschützt und
    können danach weder verschoben noch gelöscht werden.
-5. **Deployen:** auf dem Server wie in der
-   [README](README.md#betrieb) beschrieben aktualisieren.
 
 ## Abhängigkeiten
 
