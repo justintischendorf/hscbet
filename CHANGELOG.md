@@ -26,6 +26,11 @@ und das Projekt folgt dem
 
 ### Geändert
 
+- Neues animiertes Logo: eine Anzeigetafel in Gelb und Navy, deren
+  Doppelpunkt blinkt. Wer im System „Bewegung reduzieren“
+  eingestellt hat, sieht ein stehendes Logo. Der Header zeigt jetzt im hellen
+  und dunklen Modus das Logo mit Schriftzug, und die Logos werden in ihrem
+  echten Seitenverhältnis angezeigt.
 - Datenbank-Indizes auf `session.userId`, `account.userId` und
   `verification.identifier`, wie von better-auth empfohlen. Das beschleunigt
   Login, Session-Abfragen und Bestätigungscodes. Die Migration läuft beim
