@@ -1,27 +1,27 @@
-# Mitwirken an HSCBet
+# Contributing to HSCBet
 
-Diese Datei beschreibt, wie Änderungen in das Projekt kommen: Branches,
-Commits, Pull Requests, CI und Releases. Wie man das Projekt lokal aufsetzt,
-steht in der [README](README.md#development).
+This file describes how changes make their way into the project: branches,
+commits, pull requests, CI and releases. How to set up the project locally is
+described in the [README](README.md#development).
 
-## Überblick
+## Overview
 
 ```text
 feat/…     ─┐
-fix/…      ─┼─ PR (Squash) ─▶ develop ─ Release-PR (Merge-Commit) ─▶ main ─▶ Tag vX.Y.Z
+fix/…      ─┼─ PR (squash) ─▶ develop ─ release PR (merge commit) ─▶ main ─▶ tag vX.Y.Z
 refactor/… ─┘
 ```
 
-- **`develop`** ist der Arbeitsbranch. Alle Änderungen kommen per Pull Request
-  hierher.
-- **`main`** enthält nur veröffentlichte Versionen. Hierher kommt nur
-  `develop` über einen Release-PR.
-- Direkte Pushes auf `main` und `develop` sind nicht möglich. Beide Branches
-  sind durch Rulesets geschützt und können nicht gelöscht werden.
+- **`develop`** is the working branch. All changes land here via pull
+  request.
+- **`main`** only contains released versions. The only thing that lands here
+  is `develop`, via a release PR.
+- Direct pushes to `main` and `develop` are not possible. Both branches are
+  protected by rulesets and cannot be deleted.
 
 ## Branches
 
-Neue Branches immer von einem aktuellen `develop` abzweigen:
+Always branch off an up-to-date `develop`:
 
 ```sh
 git switch develop
@@ -29,19 +29,19 @@ git pull
 git switch -c feat/group-chat
 ```
 
-Der Branch-Name orientiert sich am Commit bzw. PR-Titel:
+The branch name follows the commit or PR title:
 
 ```text
-<typ>/<kurze-beschreibung>
+<type>/<short-description>
 ```
 
-- `<typ>` ist derselbe Typ wie im PR-Titel (siehe
-  [Commits und PR-Titel](#commits-und-pr-titel)), also `feat`, `fix`,
-  `refactor`, `style`, `docs`, `build`, `ci`, `chore` oder `revert`.
-- `<kurze-beschreibung>` fasst den PR in zwei bis vier Wörtern zusammen:
-  Englisch, Kleinbuchstaben, mit Bindestrichen, ohne Artikel.
+- `<type>` is the same type as in the PR title (see
+  [Commits and PR titles](#commits-and-pr-titles)), i.e. `feat`, `fix`,
+  `refactor`, `style`, `docs`, `build`, `ci`, `chore` or `revert`.
+- `<short-description>` sums up the PR in two to four words: English,
+  lowercase, hyphenated, without articles.
 
-| Branch                      | PR-Titel                                               |
+| Branch                      | PR title                                               |
 | --------------------------- | ------------------------------------------------------ |
 | `feat/group-invite`         | `feat: add the group invite workflow and popup`        |
 | `fix/avatar-fallback`       | `fix: show the avatar loading state`                   |
@@ -52,141 +52,140 @@ Der Branch-Name orientiert sich am Commit bzw. PR-Titel:
 | `chore/update-dependencies` | `chore: update the dependencies`                       |
 | `revert/animated-logo`      | `revert: replace the logo with an animated scoreboard` |
 
-Branches von Dependabot heißen `dependabot/…` und werden automatisch angelegt.
-Nach dem Merge löscht GitHub den Branch automatisch.
+Dependabot branches are named `dependabot/…` and are created automatically.
+GitHub deletes the branch automatically after the merge.
 
-## Commits und PR-Titel
+## Commits and PR titles
 
-Commit-Nachrichten und PR-Titel folgen
-[Conventional Commits](https://www.conventionalcommits.org/de/v1.0.0/):
+Commit messages and PR titles follow
+[Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/):
 
 ```text
-<typ>: <beschreibung>
+<type>: <description>
 ```
 
-- Englisch, alles kleingeschrieben, im Imperativ, ohne Punkt am Ende
-- Die Beschreibung ist ein kurzer Satz, meist mit Artikel:
-  `feat: add the group stats screen`, nicht `feat: group stats`
+- English, all lowercase, imperative mood, no trailing period
+- The description is a short sentence, usually with an article:
+  `feat: add the group stats screen`, not `feat: group stats`
 
-| Typ        | Wofür                                    | Beispiel                                               |
-| ---------- | ---------------------------------------- | ------------------------------------------------------ |
-| `feat`     | Neue Funktion oder sichtbare Erweiterung | `feat: let the group leader edit the group info`       |
-| `fix`      | Fehlerbehebung                           | `fix: show the connection state on the avatar`         |
-| `refactor` | Umbau ohne neue Funktion                 | `refactor: prefetch the api data per route`            |
-| `style`    | Nur Formatierung, kein geänderter Code   | `style: format the api and web apps`                   |
-| `docs`     | Nur Dokumentation                        | `docs: update the readme and the .env.example files`   |
-| `build`    | Build, Docker, Abhängigkeiten            | `build: add the production build setup`                |
-| `ci`       | GitHub Actions, Dependabot               | `ci: add the dependabot config`                        |
-| `chore`    | Sonstiges, z. B. Tooling oder `bun.lock` | `chore: replace eslint with oxlint`                    |
-| `revert`   | Macht einen früheren Commit rückgängig   | `revert: replace the logo with an animated scoreboard` |
+| Type       | Used for                           | Example                                                |
+| ---------- | ---------------------------------- | ------------------------------------------------------ |
+| `feat`     | New feature or visible enhancement | `feat: let the group leader edit the group info`       |
+| `fix`      | Bug fix                            | `fix: show the connection state on the avatar`         |
+| `refactor` | Restructuring without new features | `refactor: prefetch the api data per route`            |
+| `style`    | Formatting only, no code changes   | `style: format the api and web apps`                   |
+| `docs`     | Documentation only                 | `docs: update the readme and the .env.example files`   |
+| `build`    | Build, Docker, dependencies        | `build: add the production build setup`                |
+| `ci`       | GitHub Actions, Dependabot         | `ci: add the dependabot config`                        |
+| `chore`    | Misc, e.g. tooling or `bun.lock`   | `chore: replace eslint with oxlint`                    |
+| `revert`   | Reverts an earlier commit          | `revert: replace the logo with an animated scoreboard` |
 
-Bei `revert` ist die Beschreibung die des rückgängig gemachten Commits.
-Über den „Revert“-Button auf GitHub heißt der PR zunächst
-`Revert "feat: …"`. Vor dem Mergen den Titel ins Format oben ändern.
+For `revert`, the description is the one of the reverted commit. When using
+the "Revert" button on GitHub, the PR is initially titled
+`Revert "feat: …"`. Change the title to the format above before merging.
 
-Dependabot hält sich selbst daran (`chore(deps): …`, `ci: …`, `build: …`).
+Dependabot follows this format on its own (`chore(deps): …`, `ci: …`,
+`build: …`).
 
 > [!IMPORTANT]
-> Weil nach `develop` per Squash gemergt wird, landet der **PR-Titel** als
-> Commit-Nachricht auf `develop` und später im Release. Er muss also dem
-> Format oben entsprechen. Hat der PR nur einen Commit, nimmt GitHub stattdessen
-> dessen Nachricht. Die einzelnen Commits auf dem Branch selbst sind sonst
-> frei.
+> Because PRs to `develop` are squash-merged, the **PR title** becomes the
+> commit message on `develop` and later in the release. So it must follow the
+> format above. If the PR has only one commit, GitHub uses that commit's
+> message instead. Otherwise, the individual commits on the branch itself
+> can be named freely.
 
-## Pull Requests
+## Pull requests
 
-1. Branch pushen und einen PR nach **`develop`** öffnen.
-2. Titel nach dem Format oben vergeben.
-3. Bei Änderungen, die Nutzer oder Betreiber betreffen, einen Eintrag unter
-   `## [Unreleased]` in der [CHANGELOG.md](CHANGELOG.md) ergänzen (siehe
+1. Push the branch and open a PR to **`develop`**.
+2. Give it a title in the format above.
+3. For changes that affect users or operators, add an entry under
+   `## [Unreleased]` in [CHANGELOG.md](CHANGELOG.md) (see
    [Changelog](#changelog)).
-4. Warten, bis die CI grün ist. Ohne grünen Check `ci` lässt sich nicht mergen.
-5. Mit **„Squash and merge“** mergen. Andere Merge-Methoden sind für
-   `develop` gesperrt.
+4. Wait for CI to pass. Without a green `ci` check, merging is blocked.
+5. Merge with **"Squash and merge"**. Other merge methods are disabled for
+   `develop`.
 
-Ein Review ist aktuell nicht vorgeschrieben. `CODEOWNERS` trägt den Owner
-automatisch als Reviewer ein.
+A review is currently not required. `CODEOWNERS` automatically adds the
+owner as a reviewer.
 
-### Vor dem Push
+### Before pushing
 
-Die CI prüft dasselbe wie diese Befehle, also am besten vorher lokal laufen
-lassen:
+CI checks the same things as these commands, so it is best to run them
+locally first:
 
 ```sh
-bun run format:check   # Formatierung (oxfmt)
-bun run lint           # Linting (oxlint)
-bun run check-types    # TypeScript-Typen
-bun run build          # Build aller Apps
+bun run format:check   # formatting (oxfmt)
+bun run lint           # linting (oxlint)
+bun run check-types    # TypeScript types
+bun run build          # build all apps
 ```
 
-Formatierungsfehler behebt `bun format`.
+`bun format` fixes formatting errors.
 
-Bei Änderungen am Datenbankschema die neue Migration aus
-`packages/database/prisma/migrations/` mit committen (siehe
-[Schema ändern](README.md#changing-the-schema)).
+When changing the database schema, commit the new migration from
+`packages/database/prisma/migrations/` as well (see
+[Changing the schema](README.md#changing-the-schema)).
 
 ## CI
 
-Der Workflow [`ci.yml`](.github/workflows/ci.yml) läuft bei jedem PR nach
-`develop` und `main` und prüft nacheinander:
+The [`ci.yml`](.github/workflows/ci.yml) workflow runs on every PR to
+`develop` and `main` and checks, in order:
 
-1. Formatierung (`bun run format:check`)
+1. Formatting (`bun run format:check`)
 2. Linting (`bun run lint`)
-3. Typen (`bun run check-types`)
+3. Types (`bun run check-types`)
 4. Build (`bun run build`)
 
-Der Job heißt `ci` und ist in den Rulesets als Pflicht-Check eingetragen.
-Wird er umbenannt, muss der Name auch im Ruleset „Protect main and develop“
-angepasst werden, sonst lässt sich kein PR mehr mergen. Tests gibt es aktuell
-keine.
+The job is called `ci` and is configured as a required check in the
+rulesets. If it is renamed, the name must also be updated in the
+"Protect main and develop" ruleset, otherwise no PR can be merged. There are
+currently no tests.
 
 ## Changelog
 
-Die [CHANGELOG.md](CHANGELOG.md) folgt
-[Keep a Changelog](https://keepachangelog.com/de/1.1.0/):
+[CHANGELOG.md](CHANGELOG.md) follows
+[Keep a Changelog](https://keepachangelog.com/en/1.1.0/):
 
-- Neue Einträge kommen unter `## [Unreleased]` in den passenden Abschnitt:
-  `Hinzugefügt`, `Geändert`, `Veraltet`, `Entfernt`, `Behoben` oder
-  `Sicherheit`.
-- Beschrieben wird, was sich für Nutzer oder Betreiber ändert, nicht wie es
-  umgesetzt ist.
-- Am Ende des Eintrags steht die PR-Nummer, z. B. `([#58])`, und unten in der
-  Datei der passende Link.
-- Reine Interna ohne Auswirkung (Formatierung, Umbenennungen, `bun.lock`)
-  brauchen keinen Eintrag.
+- New entries go under `## [Unreleased]` in the matching section: `Added`,
+  `Changed`, `Deprecated`, `Removed`, `Fixed` or `Security`.
+- Describe what changes for users or operators, not how it is implemented.
+- Each entry ends with the PR number, e.g. `([#58])`, with the matching link
+  at the bottom of the file.
+- Purely internal changes without impact (formatting, renames, `bun.lock`)
+  don't need an entry.
 
 ## Releases
 
-Versionen folgen [Semantic Versioning](https://semver.org/lang/de/):
-`MAJOR.MINOR.PATCH`, z. B. `v1.1.0` für neue Funktionen oder `v1.0.1` für
-reine Fehlerbehebungen.
+Versions follow [Semantic Versioning](https://semver.org/):
+`MAJOR.MINOR.PATCH`, e.g. `v1.1.0` for new features or `v1.0.1` for bug
+fixes only.
 
-1. **Changelog vorbereiten:** Auf einem Branch (z. B. `docs/release-v1.1.0`)
-   in der `CHANGELOG.md` `## [Unreleased]` in `## [1.1.0] - JJJJ-MM-TT`
-   umbenennen, darüber ein neues, leeres `## [Unreleased]` anlegen und die
-   Links unten anpassen. Per PR nach `develop` mergen.
-2. **Release-PR öffnen:** PR von `develop` nach `main` mit dem Titel
-   `v1.1.0`. Die Beschreibung **leer lassen**: Der Workflow
-   [`release-pr.yml`](.github/workflows/release-pr.yml) füllt sie aus der
-   Vorlage [`release_pr_template.md`](.github/release_pr_template.md) mit allen
-   Commits seit dem letzten Release. Danach nur noch die Zusammenfassung oben
-   ergänzen.
-3. **Mergen** mit **„Create a merge commit“**. Andere Merge-Methoden sind
-   für `main` gesperrt.
-4. **Tag und GitHub Release:** Auf GitHub unter **Releases → Draft a new
-   release** den Tag `v1.1.0` auf `main` anlegen. Als Text den Abschnitt der
-   Version aus der `CHANGELOG.md` übernehmen. Tags `v*` sind geschützt und
-   können danach weder verschoben noch gelöscht werden.
+1. **Prepare the changelog:** On a branch (e.g. `docs/release-v1.1.0`),
+   rename `## [Unreleased]` in `CHANGELOG.md` to `## [1.1.0] - YYYY-MM-DD`,
+   add a new, empty `## [Unreleased]` above it and update the links at the
+   bottom. Merge it into `develop` via PR.
+2. **Open the release PR:** Open a PR from `develop` to `main` titled
+   `v1.1.0`. **Leave the description empty**: the
+   [`release-pr.yml`](.github/workflows/release-pr.yml) workflow fills it
+   from the [`release_pr_template.md`](.github/release_pr_template.md)
+   template with all commits since the last release. Then just add the
+   summary at the top.
+3. **Merge** with **"Create a merge commit"**. Other merge methods are
+   disabled for `main`.
+4. **Tag and GitHub release:** On GitHub, go to **Releases → Draft a new
+   release** and create the tag `v1.1.0` on `main`. Use the version's section
+   from `CHANGELOG.md` as the release notes. `v*` tags are protected and
+   cannot be moved or deleted afterwards.
 
-## Abhängigkeiten
+## Dependencies
 
-Dependabot öffnet jeden Montag PRs nach `develop` (Konfiguration in
+Every Monday, Dependabot opens PRs to `develop` (configured in
 [`dependabot.yml`](.github/dependabot.yml)):
 
-- Bun-Pakete: Minor- und Patch-Updates gesammelt in einem PR, Major-Updates
-  einzeln
-- GitHub Actions in einem PR
-- Docker-Images aus den Dockerfiles und den Compose-Dateien
+- Bun packages: minor and patch updates grouped in one PR, major updates
+  individually
+- GitHub Actions in one PR
+- Docker images from the Dockerfiles and the Compose files
 
-Diese PRs werden wie alle anderen behandelt: CI abwarten, bei Major-Updates
-lokal kurz testen, dann per Squash mergen.
+These PRs are handled like any other: wait for CI, briefly test major
+updates locally, then squash-merge.

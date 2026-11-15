@@ -1,185 +1,194 @@
 # Changelog
 
-Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei festgehalten.
+All notable changes to this project are documented in this file.
 
-Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/),
-und das Projekt folgt dem
-[Semantic Versioning](https://semver.org/lang/de/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to
+[Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-11-16
+
+### Changed
+
+- Redis now runs on version 8 (development and production). Existing data
+  is migrated, but switching back to Redis 7 is no longer possible
+  afterwards. ([#72])
+- `CHANGELOG.md` and `CONTRIBUTING.md` are now in English. ([#76])
+
 ## [1.1.0] - 2026-11-15
 
-### Hinzugefügt
+### Added
 
-- CI prüft bei jedem Pull Request nach `develop` und `main` zusätzlich die
-  TypeScript-Typen (`bun run check-types`) und baut alle Apps
-  (`bun run build`). Neues Script `bun run format:check`. ([#57])
-- Release-PR-Workflow: Ein neuer PR nach `main` mit leerer Beschreibung wird
-  automatisch mit `.github/release_pr_template.md` und der Liste der Commits
-  seit dem letzten Release gefüllt. Die Version kommt aus dem PR-Titel
-  (z. B. `v1.1.0`). ([#57])
-- Dependabot öffnet jeden Montag PRs nach `develop` für Bun-Pakete,
-  GitHub Actions, die Basis-Images der Dockerfiles und die Images in den
-  Compose-Dateien. ([#58])
-- `CHANGELOG.md` und `CONTRIBUTING.md` mit den Regeln für Branches, Commits,
-  Pull Requests, CI und Releases. ([#59])
-- Script `bun lint:fix`, das automatisch behebbare Lint-Fehler korrigiert. ([#61])
+- On every pull request to `develop` and `main`, CI now also checks the
+  TypeScript types (`bun run check-types`) and builds all apps
+  (`bun run build`). New script `bun run format:check`. ([#57])
+- Release PR workflow: a new PR to `main` with an empty description is
+  automatically filled with `.github/release_pr_template.md` and the list of
+  commits since the last release. The version is taken from the PR title
+  (e.g. `v1.1.0`). ([#57])
+- Every Monday, Dependabot opens PRs to `develop` for Bun packages,
+  GitHub Actions, the Dockerfile base images and the images in the
+  Compose files. ([#58])
+- `CHANGELOG.md` and `CONTRIBUTING.md` with the rules for branches, commits,
+  pull requests, CI and releases. ([#59])
+- Script `bun lint:fix`, which fixes auto-fixable lint errors. ([#61])
 
-### Geändert
+### Changed
 
-- `revert` ist in der `CONTRIBUTING.md` als Typ für Commits, PR-Titel und
-  Branch-Namen ergänzt.
-- Die README ist jetzt auf Englisch, deutlich kürzer und grob an ghostlyjs
-  angelehnt: Systemdiagramm, eine Tabelle mit allen
-  `.env`-Variablen für Development und Production sowie kompakte
-  Anleitungen für beide Umgebungen. ([#67])
-- Neues animiertes Logo: eine Anzeigetafel in Gelb und Navy, deren
-  Doppelpunkt blinkt. Wer im System „Bewegung reduzieren“
-  eingestellt hat, sieht ein stehendes Logo. Der Header zeigt jetzt im hellen
-  und dunklen Modus das Logo mit Schriftzug, und die Logos werden in ihrem
-  echten Seitenverhältnis angezeigt. ([#66])
-- Datenbank-Indizes auf `session.userId`, `account.userId` und
-  `verification.identifier`, wie von better-auth empfohlen. Das beschleunigt
-  Login, Session-Abfragen und Bestätigungscodes. Die Migration läuft beim
-  nächsten Start automatisch und ändert keine Daten. ([#65])
-- Das Systemdiagramm in `docs/architecture` zeigt jetzt auch das Rank Module.
+- `revert` has been added to `CONTRIBUTING.md` as a type for commits, PR
+  titles and branch names.
+- The README is now in English, much shorter and loosely modeled on
+  ghostlyjs: a system diagram, a table of all `.env` variables for
+  development and production, and compact guides for both environments.
+  ([#67])
+- New animated logo: a scoreboard in yellow and navy with a blinking colon.
+  Users who have enabled "reduce motion" in their system settings see a
+  static logo. The header now shows the logo with wordmark in both light and
+  dark mode, and logos are displayed in their actual aspect ratio. ([#66])
+- Database indexes on `session.userId`, `account.userId` and
+  `verification.identifier`, as recommended by better-auth. This speeds up
+  login, session lookups and verification codes. The migration runs
+  automatically on the next start and does not change any data. ([#65])
+- The system diagram in `docs/architecture` now also shows the rank module.
   ([#60])
-- oxlint nutzt zusätzlich die Plugins `unicorn`, `oxc` und `import`, und
-  `bun lint:fix` entfernt ungenutzte Imports. oxfmt sortiert Imports in
-  Gruppen (Node, Pakete, `@repo/` und `@/`, relative Pfade) mit Leerzeilen
-  dazwischen. ([#61])
-- VS Code formatiert alle Dateien mit oxc statt TypeScript und JSON mit
-  Prettier, so wie die CI prüft. ([#61])
-- Alle Abhängigkeiten auf den aktuellen Stand gebracht, u. a. TypeScript 7,
-  Next.js 16.4, React 19.3, better-auth 1.7, Prisma 7.10, BullMQ 6,
-  ioredis 6, dotenv 18 und Bun 1.4.4. Elysia bleibt bei 1.4 und damit
-  `elysia-rate-limit` bei 4.6, Prisma 8 ist noch ein Release Candidate. ([#62])
+- oxlint now also uses the `unicorn`, `oxc` and `import` plugins, and
+  `bun lint:fix` removes unused imports. oxfmt sorts imports into groups
+  (Node, packages, `@repo/` and `@/`, relative paths) separated by blank
+  lines. ([#61])
+- VS Code formats all files with oxc instead of formatting TypeScript and
+  JSON with Prettier, matching what CI checks. ([#61])
+- Updated all dependencies to their latest versions, including
+  TypeScript 7, Next.js 16.4, React 19.3, better-auth 1.7, Prisma 7.10,
+  BullMQ 6, ioredis 6, dotenv 18 and Bun 1.4.4. Elysia stays on 1.4 and
+  therefore `elysia-rate-limit` on 4.6; Prisma 8 is still a release
+  candidate. ([#62])
 
-### Behoben
+### Fixed
 
-- Das Logo fehlte auf verschachtelten Seiten wie `/groups/[id]`, weil die
-  Bildpfade relativ statt absolut waren. ([#64])
-- Auf der Kontoseite hatten die Passwortfelder zum Ändern des Passworts und
-  zum Löschen des Accounts dieselbe ID, sodass ein Klick auf das Label das
-  falsche Feld auswählen konnte. ([#64])
-- Die Warnungen der neuen React-Regeln von oxlint 1.93 behoben. Die
-  ausgewählte Saison (Saison, Tipps, Gruppe) und der Dialog zur
-  E-Mail-Bestätigung werden beim Rendern abgeleitet statt in einem Effect
-  gesetzt. Die Bildvorschau beim Profil- und Gruppenbild entsteht direkt
-  beim Auswählen der Datei. ([#63])
-- Der Dialog zur E-Mail-Bestätigung öffnet sich nach dem Schließen nicht
-  mehr erneut, wenn die Session neu geladen wird. ([#63])
-- Eingaben im Passwort-Formular und in den Konto-Daten werden nicht mehr
-  zurückgesetzt, wenn die Session neu geladen wird (z. B. beim Wechsel
-  zurück in den Tab). ([#63])
-- Tipps auf der Tipp-Seite sperren sich beim Anpfiff jetzt auch ohne
-  Neuladen der Seite (Prüfung alle 30 Sekunden). ([#63])
-- `bun run check-types` und `bun run build` warten auf
-  `@repo/database#generate`. Vorher liefen Packages wie `worker` und
-  `treaty` parallel dazu und fanden den generierten Prisma Client nicht,
-  wenn er noch nicht existierte (z. B. in der CI). ([#57])
+- The logo was missing on nested pages such as `/groups/[id]` because the
+  image paths were relative instead of absolute. ([#64])
+- On the account page, the password fields for changing the password and for
+  deleting the account had the same ID, so clicking a label could focus the
+  wrong field. ([#64])
+- Fixed the warnings from the new React rules in oxlint 1.93. The selected
+  season (season, tips, group) and the email verification dialog are now
+  derived during render instead of being set in an effect. The image preview
+  for profile and group pictures is created directly when the file is
+  selected. ([#63])
+- The email verification dialog no longer reopens after being closed when
+  the session is reloaded. ([#63])
+- Input in the password form and the account details is no longer reset
+  when the session is reloaded (e.g. when switching back to the tab). ([#63])
+- Tips on the tips page now lock at kick-off without reloading the page
+  (checked every 30 seconds). ([#63])
+- `bun run check-types` and `bun run build` wait for
+  `@repo/database#generate`. Previously, packages such as `worker` and
+  `treaty` ran in parallel and could not find the generated Prisma Client if
+  it did not exist yet (e.g. in CI). ([#57])
 
-### Entfernt
+### Removed
 
-- MIT-Lizenz (`LICENSE`) und der Lizenz-Abschnitt in der README. ([#57])
-- Script `bun lint:turbo`, das wegen der zyklischen Abhängigkeit zwischen
-  `@repo/api` und `@repo/auth` nie lief. Gelintet wird mit `bun lint`. ([#59])
-- Prettier und `prettier-plugin-tailwindcss`. Formatiert wird nur noch mit
-  oxfmt. ([#61])
+- MIT license (`LICENSE`) and the license section in the README. ([#57])
+- Script `bun lint:turbo`, which never ran because of the circular
+  dependency between `@repo/api` and `@repo/auth`. Linting is done with
+  `bun lint`. ([#59])
+- Prettier and `prettier-plugin-tailwindcss`. Formatting is done with oxfmt
+  only. ([#61])
 
 ## [1.0.0] - 2026-10-30
 
-Erstes Release der Tippspiel-Plattform für den HSC 2000 Coburg.
+First release of the prediction game platform for HSC 2000 Coburg.
 
-### Hinzugefügt
+### Added
 
-#### Accounts und Anmeldung
+#### Accounts and sign-in
 
-- Registrierung und Anmeldung mit E-Mail und Passwort über Better Auth,
-  mit Logo und eigenem Theme auf den Auth-Seiten. ([#10])
-- Freigabe neuer Accounts: Nach der Registrierung geht eine Review-Mail an
-  `SIGNUP_REVIEW_MAIL_ADDRESS`. Ihre Links führen auf `/signup/review`, wo
-  der Account per Klick freigegeben oder abgelehnt wird. Bis zur Freigabe
-  ist keine Anmeldung möglich. ([#49])
-- E-Mail-Bestätigung, „Passwort vergessen“ mit Einmalcode (OTP) und
-  E-Mail-Versand über Resend. ([#33], [#37], [#49])
-- Zwei-Faktor-Authentifizierung mit Authenticator-App, Backup-Codes zum
-  Kopieren und Anmeldung mit einem Backup-Code. ([#15], [#16])
-- Account-Einstellungen: Name, E-Mail und Passwort ändern (mit Anzeige der
-  Passwortstärke), Profilbild hochladen und Account löschen. ([#14], [#17],
-  [#44])
+- Sign-up and sign-in with email and password via Better Auth, with the
+  logo and a custom theme on the auth pages. ([#10])
+- Approval of new accounts: after sign-up, a review email is sent to
+  `SIGNUP_REVIEW_MAIL_ADDRESS`. Its links lead to `/signup/review`, where
+  the account can be approved or rejected with one click. Signing in is not
+  possible until the account is approved. ([#49])
+- Email verification, "forgot password" with a one-time code (OTP) and
+  email delivery via Resend. ([#33], [#37], [#49])
+- Two-factor authentication with an authenticator app, copyable backup
+  codes and sign-in with a backup code. ([#15], [#16])
+- Account settings: change name, email and password (with a password
+  strength indicator), upload a profile picture and delete the account.
+  ([#14], [#17], [#44])
 
-#### Saisons, Spiele und Tipps
+#### Seasons, matches and tips
 
-- Saison-Seite mit der Tabelle aller Spiele einer Saison. ([#18], [#23])
-- Tipp-Seite: Tipps für kommende Spiele abgeben und ändern, Diagramm mit
-  den richtigen und falschen Tipps pro Saison. ([#19], [#24], [#27], [#36])
-- Punktevergabe pro Spiel nach der Tordifferenz: 2 Punkte für die exakte
-  Differenz (1 Punkt je Spieler, wenn mehrere sie treffen). Trifft niemand
-  die Differenz, bekommt der nächste Tipp 1 Punkt (0,5 je Spieler bei
-  Gleichstand). ([#29], [#49])
-- Dashboard mit den eigenen Punkten und Ranglogos. ([#28], [#29])
+- Season page with a table of all matches in a season. ([#18], [#23])
+- Tips page: submit and change tips for upcoming matches, with a chart of
+  correct and incorrect tips per season. ([#19], [#24], [#27], [#36])
+- Points per match based on the goal difference: 2 points for the exact
+  difference (1 point each if several players get it). If nobody gets the
+  difference, the closest tip gets 1 point (0.5 each in case of a tie).
+  ([#29], [#49])
+- Dashboard with your own points and rank logos. ([#28], [#29])
 
-#### Gruppen
+#### Groups
 
-- Gruppen erstellen, mit Gruppenbild, und verlassen. Eine Gruppe lässt sich
-  als Favorit markieren. ([#20], [#24], [#25], [#30])
-- Mitglieder einladen: Die Einladung erscheint im Posteingang der
-  eingeladenen Person und kann dort angenommen werden. ([#40])
-- Gruppen-Statistiken mit Platzierung, Punkten pro Spiel und Rang-Icons je
-  Saison. Die aktuelle Saison ist vorausgewählt. ([#39])
-- Der Gruppenleiter kann Name, Beschreibung und Bild der Gruppe bearbeiten.
+- Create groups with a group picture, and leave them. A group can be
+  marked as a favorite. ([#20], [#24], [#25], [#30])
+- Invite members: the invitation appears in the invited person's inbox and
+  can be accepted there. ([#40])
+- Group statistics with ranking, points per match and rank icons per
+  season. The current season is preselected. ([#39])
+- The group leader can edit the group's name, description and picture.
   ([#46])
 
 #### Admin
 
-- Admin-Bereich: Saisons und Spiele anlegen, bearbeiten und löschen sowie
-  Spielergebnisse eintragen und nachträglich korrigieren. Alle Nutzer
-  bekommen dazu eine Benachrichtigung, und ihre Punkte werden neu
-  berechnet. ([#26], [#48], [#50])
-- Script `bun db:admin <email>` vergibt die Admin-Rolle, `--revoke` entzieht
-  sie. ([#48])
+- Admin area: create, edit and delete seasons and matches, and enter and
+  later correct match results. All users get a notification, and their
+  points are recalculated. ([#26], [#48], [#50])
+- Script `bun db:admin <email>` grants the admin role, `--revoke` revokes
+  it. ([#48])
 
-#### Oberfläche
+#### Interface
 
-- Navigation mit Logo, Avatar und Anzeige der WebSocket-Verbindung. ([#8],
+- Navigation with logo, avatar and WebSocket connection indicator. ([#8],
   [#13], [#17], [#21], [#22])
-- Posteingang mit Benachrichtigungen in Echtzeit, z. B. für
-  Gruppeneinladungen und geänderte Spiele. Alle lassen sich als gelesen
-  markieren, gelesene lassen sich löschen. ([#34])
-- Alle Seiten sind für Smartphone und Desktop ausgelegt. ([#38], [#43])
-- Heller und dunkler Modus. ([#42])
-- Neues Logo und Spielerbild. ([#47])
+- Inbox with real-time notifications, e.g. for group invitations and
+  changed matches. All can be marked as read, and read ones can be deleted.
+  ([#34])
+- All pages are designed for smartphone and desktop. ([#38], [#43])
+- Light and dark mode. ([#42])
+- New logo and player image. ([#47])
 
-#### Technik und Betrieb
+#### Technology and operations
 
-- Turborepo-Monorepo mit Bun: Next.js-Frontend (`apps/web`) und
-  Elysia-API (`apps/api`). ([#2])
-- Datenbank mit Prisma und SQLite (libSQL), inklusive Migrationen. ([#6],
+- Turborepo monorepo with Bun: Next.js frontend (`apps/web`) and
+  Elysia API (`apps/api`). ([#2])
+- Database with Prisma and SQLite (libSQL), including migrations. ([#6],
   [#52])
-- Typisierter API-Client mit Eden Treaty (`packages/treaty`) und ein
-  gemeinsamer Logger (`packages/logger`). ([#9])
-- WebSocket-Verbindung zwischen Frontend und API. ([#11])
-- Dateispeicher über MinIO / S3 mit Presigned URLs (`packages/bucket`) und
-  Rate Limiting der API (50 Anfragen pro Minute und IP). ([#12])
-- Hintergrund-Jobs: Job-Queue über Redis (`packages/queue`), ein Worker
-  (`packages/worker`) und Pub/Sub (`packages/pub-sub`), über das der
-  Worker Ergebnisse per WebSocket an die Clients schickt. ([#32], [#34])
-- API-Daten werden pro Route vorgeladen, Ladezustände laufen über TanStack
-  Query Mutations. ([#31], [#35])
-- Docker Compose für die Entwicklung (MinIO, Redis, Worker) und für
-  Production (alle Services, Migrationen laufen beim Start automatisch).
-  ([#13], [#38], [#55])
-- Seed-Script `bun db:seed` mit Demo-Daten für die lokale Entwicklung.
-  ([#42], [#48], [#49])
-- Linting und Formatierung mit oxlint und oxfmt, CI für Pull Requests und
+- Typed API client with Eden Treaty (`packages/treaty`) and a shared
+  logger (`packages/logger`). ([#9])
+- WebSocket connection between frontend and API. ([#11])
+- File storage via MinIO / S3 with presigned URLs (`packages/bucket`) and
+  API rate limiting (50 requests per minute per IP). ([#12])
+- Background jobs: job queue via Redis (`packages/queue`), a worker
+  (`packages/worker`) and pub/sub (`packages/pub-sub`), through which the
+  worker sends results to clients over WebSocket. ([#32], [#34])
+- API data is prefetched per route, and loading states use TanStack Query
+  mutations. ([#31], [#35])
+- Docker Compose for development (MinIO, Redis, worker) and for production
+  (all services, migrations run automatically on start). ([#13], [#38],
+  [#55])
+- Seed script `bun db:seed` with demo data for local development. ([#42],
+  [#48], [#49])
+- Linting and formatting with oxlint and oxfmt, CI for pull requests and
   `CODEOWNERS`. ([#2], [#3], [#4], [#39], [#51])
-- Pakete kommen aus der öffentlichen npm-Registry. ([#45])
-- README mit Anleitungen für Development und Production, Systemdiagramm und
-  `.env.example`-Dateien. ([#8], [#53], [#55])
+- Packages come from the public npm registry. ([#45])
+- README with guides for development and production, a system diagram and
+  `.env.example` files. ([#8], [#53], [#55])
 
-[Unreleased]: https://github.com/justintischendorf/hscbet/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/justintischendorf/hscbet/compare/v1.1.1...HEAD
+[1.1.1]: https://github.com/justintischendorf/hscbet/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/justintischendorf/hscbet/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/justintischendorf/hscbet/releases/tag/v1.0.0
 [#2]: https://github.com/justintischendorf/hscbet/pull/2
@@ -243,3 +252,5 @@ Erstes Release der Tippspiel-Plattform für den HSC 2000 Coburg.
 [#65]: https://github.com/justintischendorf/hscbet/pull/65
 [#66]: https://github.com/justintischendorf/hscbet/pull/66
 [#67]: https://github.com/justintischendorf/hscbet/pull/67
+[#72]: https://github.com/justintischendorf/hscbet/pull/72
+[#76]: https://github.com/justintischendorf/hscbet/pull/76
