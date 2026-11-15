@@ -26,6 +26,10 @@ und das Projekt folgt dem
 
 ### Geändert
 
+- Datenbank-Indizes auf `session.userId`, `account.userId` und
+  `verification.identifier`, wie von better-auth empfohlen. Das beschleunigt
+  Login, Session-Abfragen und Bestätigungscodes. Die Migration läuft beim
+  nächsten Start automatisch und ändert keine Daten.
 - Das Systemdiagramm in `docs/architecture` zeigt jetzt auch das Rank Module.
   ([#60])
 - oxlint nutzt zusätzlich die Plugins `unicorn`, `oxc` und `import`, und
