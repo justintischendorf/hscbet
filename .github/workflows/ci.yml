@@ -49,4 +49,7 @@ jobs:
         run: bun run check-types
 
       - name: Build
+        # apps/web/lib/auth-client.ts throws without it while prerendering
+        env:
+          NEXT_PUBLIC_AUTH_BASE_URL: http://localhost:3001
         run: bun run build
