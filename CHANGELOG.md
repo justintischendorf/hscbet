@@ -34,6 +34,10 @@ und das Projekt folgt dem
   dazwischen.
 - VS Code formatiert alle Dateien mit oxc statt TypeScript und JSON mit
   Prettier, so wie die CI prüft.
+- Alle Abhängigkeiten auf den aktuellen Stand gebracht, u. a. TypeScript 7,
+  Next.js 16.4, React 19.3, better-auth 1.7, Prisma 7.10, BullMQ 6,
+  ioredis 6, dotenv 18 und Bun 1.4.4. Elysia bleibt bei 1.4 und damit
+  `elysia-rate-limit` bei 4.6, Prisma 8 ist noch ein Release Candidate.
 
 ### Behoben
 

@@ -105,6 +105,7 @@ export default function AccountSettings() {
     const { error, data } = await authClient.twoFactor.enable({
       password,
       issuer: "HSCBet",
+      method: "totp",
     });
     setIsSubmitting(false);
 
@@ -117,7 +118,7 @@ export default function AccountSettings() {
     setPendingAction(null);
     setPassword("");
 
-    if (data?.totpURI) {
+    if (data?.method === "totp") {
       setStep("qr");
       setTotpURI(data.totpURI);
       setBackupCodes(data.backupCodes || []);
