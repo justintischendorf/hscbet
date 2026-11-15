@@ -510,7 +510,3 @@ Bei Problemen zuerst die Logs ansehen: `docker compose -f docker-compose-prod.ym
 - **Bilder laden nicht oder Upload schlägt fehl:** `MINIO_PUBLIC_ENDPOINT` prüfen. Die Adresse muss aus dem Browser erreichbar sein und im Reverse Proxy auf Port 9000 zeigen.
 - **Keine Freigabe-Mail nach der Registrierung:** `RESEND_API_KEY`, `RESEND_MAIL_ADDRESS` und `SIGNUP_REVIEW_MAIL_ADDRESS` prüfen. Die Absender-Domain muss bei Resend verifiziert sein. Fehler stehen in `docker compose -f docker-compose-prod.yml logs api`.
 - **`migrate` endet nicht mit `exited (0)`:** `docker compose -f docker-compose-prod.yml logs migrate` zeigt den Fehler.
-
-## Lizenz
-
-Veröffentlicht unter der [MIT-Lizenz](LICENSE). Der Code darf frei genutzt, verändert, gehostet und weitergegeben werden, solange der Lizenztext mit dem Copyright-Hinweis erhalten bleibt. Eine Gewährleistung gibt es nicht.
