@@ -37,19 +37,20 @@ Der Branch-Name orientiert sich am Commit bzw. PR-Titel:
 
 - `<typ>` ist derselbe Typ wie im PR-Titel (siehe
   [Commits und PR-Titel](#commits-und-pr-titel)), also `feat`, `fix`,
-  `refactor`, `style`, `docs`, `build`, `ci` oder `chore`.
+  `refactor`, `style`, `docs`, `build`, `ci`, `chore` oder `revert`.
 - `<kurze-beschreibung>` fasst den PR in zwei bis vier Wörtern zusammen:
   Englisch, Kleinbuchstaben, mit Bindestrichen, ohne Artikel.
 
-| Branch                      | PR-Titel                                             |
-| --------------------------- | ---------------------------------------------------- |
-| `feat/group-invite`         | `feat: add the group invite workflow and popup`      |
-| `fix/avatar-fallback`       | `fix: show the avatar loading state`                 |
-| `refactor/tips-layout`      | `refactor: rework the tips layout`                   |
-| `docs/changelog`            | `docs: add the changelog and the contributing guide` |
-| `build/production-build`    | `build: add the production build setup`              |
-| `ci/dependabot`             | `ci: add the dependabot config`                      |
-| `chore/update-dependencies` | `chore: update the dependencies`                     |
+| Branch                      | PR-Titel                                               |
+| --------------------------- | ------------------------------------------------------ |
+| `feat/group-invite`         | `feat: add the group invite workflow and popup`        |
+| `fix/avatar-fallback`       | `fix: show the avatar loading state`                   |
+| `refactor/tips-layout`      | `refactor: rework the tips layout`                     |
+| `docs/changelog`            | `docs: add the changelog and the contributing guide`   |
+| `build/production-build`    | `build: add the production build setup`                |
+| `ci/dependabot`             | `ci: add the dependabot config`                        |
+| `chore/update-dependencies` | `chore: update the dependencies`                       |
+| `revert/animated-logo`      | `revert: replace the logo with an animated scoreboard` |
 
 Branches von Dependabot heißen `dependabot/…` und werden automatisch angelegt.
 Nach dem Merge löscht GitHub den Branch automatisch.
@@ -67,16 +68,21 @@ Commit-Nachrichten und PR-Titel folgen
 - Die Beschreibung ist ein kurzer Satz, meist mit Artikel:
   `feat: add the group stats screen`, nicht `feat: group stats`
 
-| Typ        | Wofür                                    | Beispiel                                             |
-| ---------- | ---------------------------------------- | ---------------------------------------------------- |
-| `feat`     | Neue Funktion oder sichtbare Erweiterung | `feat: let the group leader edit the group info`     |
-| `fix`      | Fehlerbehebung                           | `fix: show the connection state on the avatar`       |
-| `refactor` | Umbau ohne neue Funktion                 | `refactor: prefetch the api data per route`          |
-| `style`    | Nur Formatierung, kein geänderter Code   | `style: format the api and web apps`                 |
-| `docs`     | Nur Dokumentation                        | `docs: update the readme and the .env.example files` |
-| `build`    | Build, Docker, Abhängigkeiten            | `build: add the production build setup`              |
-| `ci`       | GitHub Actions, Dependabot               | `ci: add the dependabot config`                      |
-| `chore`    | Sonstiges, z. B. Tooling oder `bun.lock` | `chore: replace eslint with oxlint`                  |
+| Typ        | Wofür                                    | Beispiel                                               |
+| ---------- | ---------------------------------------- | ------------------------------------------------------ |
+| `feat`     | Neue Funktion oder sichtbare Erweiterung | `feat: let the group leader edit the group info`       |
+| `fix`      | Fehlerbehebung                           | `fix: show the connection state on the avatar`         |
+| `refactor` | Umbau ohne neue Funktion                 | `refactor: prefetch the api data per route`            |
+| `style`    | Nur Formatierung, kein geänderter Code   | `style: format the api and web apps`                   |
+| `docs`     | Nur Dokumentation                        | `docs: update the readme and the .env.example files`   |
+| `build`    | Build, Docker, Abhängigkeiten            | `build: add the production build setup`                |
+| `ci`       | GitHub Actions, Dependabot               | `ci: add the dependabot config`                        |
+| `chore`    | Sonstiges, z. B. Tooling oder `bun.lock` | `chore: replace eslint with oxlint`                    |
+| `revert`   | Macht einen früheren Commit rückgängig   | `revert: replace the logo with an animated scoreboard` |
+
+Bei `revert` ist die Beschreibung die des rückgängig gemachten Commits.
+Über den „Revert“-Button auf GitHub heißt der PR zunächst
+`Revert "feat: …"`. Vor dem Mergen den Titel ins Format oben ändern.
 
 Dependabot hält sich selbst daran (`chore(deps): …`, `ci: …`, `build: …`).
 

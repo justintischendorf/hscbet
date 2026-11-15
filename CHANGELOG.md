@@ -8,6 +8,8 @@ und das Projekt folgt dem
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-11-15
+
 ### Hinzugefügt
 
 - CI prüft bei jedem Pull Request nach `develop` und `main` zusätzlich die
@@ -22,55 +24,57 @@ und das Projekt folgt dem
   Compose-Dateien. ([#58])
 - `CHANGELOG.md` und `CONTRIBUTING.md` mit den Regeln für Branches, Commits,
   Pull Requests, CI und Releases. ([#59])
-- Script `bun lint:fix`, das automatisch behebbare Lint-Fehler korrigiert.
+- Script `bun lint:fix`, das automatisch behebbare Lint-Fehler korrigiert. ([#61])
 
 ### Geändert
 
+- `revert` ist in der `CONTRIBUTING.md` als Typ für Commits, PR-Titel und
+  Branch-Namen ergänzt.
 - Die README ist jetzt auf Englisch, deutlich kürzer und grob an ghostlyjs
   angelehnt: Systemdiagramm, eine Tabelle mit allen
   `.env`-Variablen für Development und Production sowie kompakte
-  Anleitungen für beide Umgebungen.
+  Anleitungen für beide Umgebungen. ([#67])
 - Neues animiertes Logo: eine Anzeigetafel in Gelb und Navy, deren
   Doppelpunkt blinkt. Wer im System „Bewegung reduzieren“
   eingestellt hat, sieht ein stehendes Logo. Der Header zeigt jetzt im hellen
   und dunklen Modus das Logo mit Schriftzug, und die Logos werden in ihrem
-  echten Seitenverhältnis angezeigt.
+  echten Seitenverhältnis angezeigt. ([#66])
 - Datenbank-Indizes auf `session.userId`, `account.userId` und
   `verification.identifier`, wie von better-auth empfohlen. Das beschleunigt
   Login, Session-Abfragen und Bestätigungscodes. Die Migration läuft beim
-  nächsten Start automatisch und ändert keine Daten.
+  nächsten Start automatisch und ändert keine Daten. ([#65])
 - Das Systemdiagramm in `docs/architecture` zeigt jetzt auch das Rank Module.
   ([#60])
 - oxlint nutzt zusätzlich die Plugins `unicorn`, `oxc` und `import`, und
   `bun lint:fix` entfernt ungenutzte Imports. oxfmt sortiert Imports in
   Gruppen (Node, Pakete, `@repo/` und `@/`, relative Pfade) mit Leerzeilen
-  dazwischen.
+  dazwischen. ([#61])
 - VS Code formatiert alle Dateien mit oxc statt TypeScript und JSON mit
-  Prettier, so wie die CI prüft.
+  Prettier, so wie die CI prüft. ([#61])
 - Alle Abhängigkeiten auf den aktuellen Stand gebracht, u. a. TypeScript 7,
   Next.js 16.4, React 19.3, better-auth 1.7, Prisma 7.10, BullMQ 6,
   ioredis 6, dotenv 18 und Bun 1.4.4. Elysia bleibt bei 1.4 und damit
-  `elysia-rate-limit` bei 4.6, Prisma 8 ist noch ein Release Candidate.
+  `elysia-rate-limit` bei 4.6, Prisma 8 ist noch ein Release Candidate. ([#62])
 
 ### Behoben
 
 - Das Logo fehlte auf verschachtelten Seiten wie `/groups/[id]`, weil die
-  Bildpfade relativ statt absolut waren.
+  Bildpfade relativ statt absolut waren. ([#64])
 - Auf der Kontoseite hatten die Passwortfelder zum Ändern des Passworts und
   zum Löschen des Accounts dieselbe ID, sodass ein Klick auf das Label das
-  falsche Feld auswählen konnte.
+  falsche Feld auswählen konnte. ([#64])
 - Die Warnungen der neuen React-Regeln von oxlint 1.93 behoben. Die
   ausgewählte Saison (Saison, Tipps, Gruppe) und der Dialog zur
   E-Mail-Bestätigung werden beim Rendern abgeleitet statt in einem Effect
   gesetzt. Die Bildvorschau beim Profil- und Gruppenbild entsteht direkt
-  beim Auswählen der Datei.
+  beim Auswählen der Datei. ([#63])
 - Der Dialog zur E-Mail-Bestätigung öffnet sich nach dem Schließen nicht
-  mehr erneut, wenn die Session neu geladen wird.
+  mehr erneut, wenn die Session neu geladen wird. ([#63])
 - Eingaben im Passwort-Formular und in den Konto-Daten werden nicht mehr
   zurückgesetzt, wenn die Session neu geladen wird (z. B. beim Wechsel
-  zurück in den Tab).
+  zurück in den Tab). ([#63])
 - Tipps auf der Tipp-Seite sperren sich beim Anpfiff jetzt auch ohne
-  Neuladen der Seite (Prüfung alle 30 Sekunden).
+  Neuladen der Seite (Prüfung alle 30 Sekunden). ([#63])
 - `bun run check-types` und `bun run build` warten auf
   `@repo/database#generate`. Vorher liefen Packages wie `worker` und
   `treaty` parallel dazu und fanden den generierten Prisma Client nicht,
@@ -82,7 +86,7 @@ und das Projekt folgt dem
 - Script `bun lint:turbo`, das wegen der zyklischen Abhängigkeit zwischen
   `@repo/api` und `@repo/auth` nie lief. Gelintet wird mit `bun lint`. ([#59])
 - Prettier und `prettier-plugin-tailwindcss`. Formatiert wird nur noch mit
-  oxfmt.
+  oxfmt. ([#61])
 
 ## [1.0.0] - 2026-10-30
 
@@ -175,7 +179,8 @@ Erstes Release der Tippspiel-Plattform für den HSC 2000 Coburg.
 - README mit Anleitungen für Development und Production, Systemdiagramm und
   `.env.example`-Dateien. ([#8], [#53], [#55])
 
-[Unreleased]: https://github.com/justintischendorf/hscbet/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/justintischendorf/hscbet/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/justintischendorf/hscbet/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/justintischendorf/hscbet/releases/tag/v1.0.0
 [#2]: https://github.com/justintischendorf/hscbet/pull/2
 [#3]: https://github.com/justintischendorf/hscbet/pull/3
@@ -231,3 +236,10 @@ Erstes Release der Tippspiel-Plattform für den HSC 2000 Coburg.
 [#58]: https://github.com/justintischendorf/hscbet/pull/58
 [#59]: https://github.com/justintischendorf/hscbet/pull/59
 [#60]: https://github.com/justintischendorf/hscbet/pull/60
+[#61]: https://github.com/justintischendorf/hscbet/pull/61
+[#62]: https://github.com/justintischendorf/hscbet/pull/62
+[#63]: https://github.com/justintischendorf/hscbet/pull/63
+[#64]: https://github.com/justintischendorf/hscbet/pull/64
+[#65]: https://github.com/justintischendorf/hscbet/pull/65
+[#66]: https://github.com/justintischendorf/hscbet/pull/66
+[#67]: https://github.com/justintischendorf/hscbet/pull/67
