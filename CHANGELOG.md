@@ -8,6 +8,12 @@ und das Projekt folgt dem
 
 ## [Unreleased]
 
+### Geändert
+
+- Redis läuft jetzt in Version 8 (Development und Production). Die
+  vorhandenen Daten werden übernommen, ein Wechsel zurück auf Redis 7 ist
+  danach nicht mehr möglich. ([#72])
+
 ## [1.1.0] - 2026-11-15
 
 ### Hinzugefügt
@@ -243,3 +249,4 @@ Erstes Release der Tippspiel-Plattform für den HSC 2000 Coburg.
 [#65]: https://github.com/justintischendorf/hscbet/pull/65
 [#66]: https://github.com/justintischendorf/hscbet/pull/66
 [#67]: https://github.com/justintischendorf/hscbet/pull/67
+[#72]: https://github.com/justintischendorf/hscbet/pull/72
