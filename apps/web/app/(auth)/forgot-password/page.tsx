@@ -104,17 +104,17 @@ export default function ForgotPasswordScreen() {
           loading="eager"
           src="/assets/logos/logo-hscbet-full.light.svg"
           alt="Logo"
-          width={100}
-          height={100}
-          className="size-40 block dark:hidden"
+          width={420}
+          height={128}
+          className="h-20 w-auto block dark:hidden"
         />
         <Image
           loading="eager"
           src="/assets/logos/logo-hscbet-full.dark.svg"
           alt="Logo"
-          width={100}
-          height={100}
-          className="size-40 hidden dark:block"
+          width={420}
+          height={128}
+          className="h-20 w-auto hidden dark:block"
         />
       </div>
       <div className="max-w-4xl mx-auto">
