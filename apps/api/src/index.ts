@@ -33,7 +33,7 @@ const app = new Elysia({ prefix: "/api" })
   .use(
     rateLimit({
       duration: 60000,
-      max: 50,
+      max: 500,
       generator: (request, server) => {
         const forwardedFor = request.headers.get("x-forwarded-for");
         if (forwardedFor) {
