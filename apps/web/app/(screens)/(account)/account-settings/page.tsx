@@ -1,10 +1,11 @@
 "use client";
 
+import { Ghost } from "ghostlyjs";
+
 import { AccountCredentialsCard } from "@/components/account-credentials-card";
 import AccountDeleteCard from "@/components/account-delete-card";
 import { AccountPasswordCard } from "@/components/account-password-card";
 import { Separator } from "@/components/ui/separator";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useSession } from "@/lib/auth-client";
 
 export default function AccountSettings() {
@@ -22,9 +23,7 @@ export default function AccountSettings() {
           Anmeldeinformationen, Passwortänderungen und Kontolöschung.
         </p>
         <Separator className="sm:my-8 my-6" />
-        {!user ? (
-          <Skeleton className="w-full h-257.75 sm:h-133 rounded-xl" />
-        ) : (
+        <Ghost name="account-settings" isLoading={!user}>
           <div className="w-full flex sm:flex-row flex-col justify-center gap-5">
             <AccountCredentialsCard user={user} />
             <div className="flex flex-col gap-5 flex-3">
@@ -32,7 +31,7 @@ export default function AccountSettings() {
               <AccountDeleteCard />
             </div>
           </div>
-        )}
+        </Ghost>
       </div>
     </main>
   );

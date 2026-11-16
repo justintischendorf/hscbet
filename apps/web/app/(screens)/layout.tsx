@@ -1,6 +1,7 @@
 "use client";
-
 import { QueryClientProvider } from "@tanstack/react-query";
+import { GhostlyProvider } from "ghostlyjs";
+import { Ghost } from "ghostlyjs";
 import { LogOut } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,10 +16,11 @@ import { ModeToggle } from "@/components/mode-toggle";
 import { Navbar } from "@/components/navbar";
 import NavbarAvatar from "@/components/navbar-avatar";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useSocket } from "@/hooks/use-socket";
 import { authClient, useSession } from "@/lib/auth-client";
 import { queryClient } from "@/lib/queryClient";
+
+import data from "../../ghostly.json";
 
 export default function ScreensLayout({
   children,
@@ -77,18 +79,18 @@ export default function ScreensLayout({
                 <LogOut className="sm:hidden" />
                 <span className="hidden sm:inline">Logout</span>
               </Button>
-              {user ? (
+              <Ghost name="user-avatar" isLoading={!user}>
                 <NavbarAvatar connected={isConnected} />
-              ) : (
-                <Skeleton className="h-8 w-8 rounded-full" />
-              )}
+              </Ghost>
               <InboxPopover />
               <ModeToggle />
             </div>
           </div>
         </div>
         <div className="flex flex-1 flex-col">
-          <div className="flex-1">{children}</div>
+          <div className="flex-1">
+            <GhostlyProvider data={data}>{children}</GhostlyProvider>
+          </div>
           <div className="sm:pb-16 pb-8">
             <Footer />
           </div>

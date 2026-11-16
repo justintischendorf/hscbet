@@ -1,5 +1,6 @@
 "use client";
 
+import { Ghost } from "ghostlyjs";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { MailWarning, ShieldAlert } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -22,7 +23,6 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { Separator } from "@/components/ui/separator";
-import { Skeleton } from "@/components/ui/skeleton";
 import { groupsQueryKey, groupsQueryFn } from "@/hooks/use-groups";
 import {
   notificationsQueryKey,
@@ -137,13 +137,11 @@ export default function DashboardScreen() {
     <main className="w-full sm:py-16 py-8 px-4 md:px-12 sm:px-6">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl font-bold tracking-tight">
-          {!user ? (
-            <Skeleton className="h-9 w-48" />
-          ) : (
-            <>
-              Hallo <span className="dark:text-huk-accent">{user.name}</span>!
-            </>
-          )}
+          <Ghost name="dashboard-greeting" isLoading={!user}>
+            <p>
+              Hallo <span className="dark:text-huk-accent">{user?.name}</span>!
+            </p>
+          </Ghost>
         </h1>
         <div className="flex sm:flex-row flex-col items-end justify-between gap-4">
           <p className="text-base">

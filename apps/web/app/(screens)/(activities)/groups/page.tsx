@@ -1,14 +1,15 @@
 "use client";
 
+import { Ghost } from "ghostlyjs";
+
 import { EmptyGroups } from "@/components/empty-groups";
 import Group from "@/components/group";
 import { NewGroupPopup } from "@/components/new-group-popup";
 import { Separator } from "@/components/ui/separator";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useGroups } from "@/hooks/use-groups";
 
 export default function GroupsScreen() {
-  const { data: groupsResponse, isLoading } = useGroups();
+  const { data: groupsResponse, isLoading: isGroupsLoading } = useGroups();
   const groups = groupsResponse?.data?.group;
   const favoriteGroupId = groupsResponse?.data?.favoriteGroupId;
 
@@ -29,24 +30,22 @@ export default function GroupsScreen() {
         </div>
         <Separator className="sm:my-8 my-6" />
         <div className="w-full items-center flex flex-col gap-4">
-          {isLoading ? (
-            <div className="flex flex-col gap-4 w-full">
-              <Skeleton className="h-96 w-full" />
-            </div>
-          ) : groups?.length === 0 ? (
+          {groups?.length === 0 ? (
             <div className="mt-20">
               <EmptyGroups />
             </div>
           ) : (
-            groups?.map((group) => {
-              return (
-                <Group
-                  key={group.id}
-                  group={group}
-                  isFavorite={group.id === favoriteGroupId}
-                />
-              );
-            })
+            <Ghost name="groups" isLoading={isGroupsLoading} count={6}>
+              {groups?.map((group) => {
+                return (
+                  <Group
+                    key={group.id}
+                    group={group}
+                    isFavorite={group.id === favoriteGroupId}
+                  />
+                );
+              })}
+            </Ghost>
           )}
         </div>
       </div>
