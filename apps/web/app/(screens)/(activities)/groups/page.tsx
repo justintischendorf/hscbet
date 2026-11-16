@@ -35,7 +35,7 @@ export default function GroupsScreen() {
               <EmptyGroups />
             </div>
           ) : (
-            <Ghost name="groups" isLoading={isGroupsLoading} count={6}>
+            <Ghost name="groups" isLoading={isGroupsLoading} count>
               {groups?.map((group) => {
                 return (
                   <Group
