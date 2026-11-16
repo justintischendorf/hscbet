@@ -1,7 +1,6 @@
 "use client";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { GhostlyProvider } from "ghostlyjs";
-import { Ghost } from "ghostlyjs";
 import { LogOut } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -46,56 +45,54 @@ export default function ScreensLayout({
 
   return (
     <QueryClientProvider client={queryClient}>
-      <main className="flex min-h-screen flex-col">
-        <div className="sm:pt-10 pt-6 sm:px-10 px-4 relative">
-          <div className="flex flex-col md:flex-row md:relative items-center justify-between gap-2">
-            <div className="order-2 md:order-1 w-full md:w-auto flex justify-center md:justify-start">
-              <Navbar />
-            </div>
-            <Link
-              href="/dashboard"
-              className="order-1 md:order-2 flex items-center justify-center md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2"
-            >
-              <Image
-                loading="eager"
-                src="/assets/logos/logo-hscbet.light.svg"
-                alt="Logo"
-                width={420}
-                height={128}
-                className="h-16 w-auto block dark:hidden"
-              />
-              <Image
-                loading="eager"
-                src="/assets/logos/logo-hscbet.dark.svg"
-                alt="Logo"
-                width={420}
-                height={128}
-                className="h-16 w-auto hidden dark:block"
-              />
-            </Link>
-            <div className="order-3 flex flex-row flex-wrap items-center justify-center gap-2 sm:gap-2 w-full sm:w-auto">
-              {!user?.twoFactorEnabled && <TwoFactorWarning />}
-              <Button variant="destructive" size="lg" onClick={handleLogout}>
-                <LogOut className="sm:hidden" />
-                <span className="hidden sm:inline">Logout</span>
-              </Button>
-              <Ghost name="user-avatar" isLoading={!user}>
+      <GhostlyProvider data={data}>
+        <main className="flex min-h-screen flex-col">
+          <div className="sm:pt-10 pt-6 sm:px-10 px-4 relative">
+            <div className="flex flex-col md:flex-row md:relative items-center justify-between gap-2">
+              <div className="order-2 md:order-1 w-full md:w-auto flex justify-center md:justify-start">
+                <Navbar />
+              </div>
+              <Link
+                href="/dashboard"
+                className="order-1 md:order-2 flex items-center justify-center md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2"
+              >
+                <Image
+                  loading="eager"
+                  src="/assets/logos/logo-hscbet.light.svg"
+                  alt="Logo"
+                  width={420}
+                  height={128}
+                  className="h-16 w-auto block dark:hidden"
+                />
+                <Image
+                  loading="eager"
+                  src="/assets/logos/logo-hscbet.dark.svg"
+                  alt="Logo"
+                  width={420}
+                  height={128}
+                  className="h-16 w-auto hidden dark:block"
+                />
+              </Link>
+              <div className="order-3 flex flex-row flex-wrap items-center justify-center gap-2 sm:gap-2 w-full sm:w-auto">
+                {!user?.twoFactorEnabled && <TwoFactorWarning />}
+                <Button variant="destructive" size="lg" onClick={handleLogout}>
+                  <LogOut className="sm:hidden" />
+                  <span className="hidden sm:inline">Logout</span>
+                </Button>
                 <NavbarAvatar connected={isConnected} />
-              </Ghost>
-              <InboxPopover />
-              <ModeToggle />
+                <InboxPopover />
+                <ModeToggle />
+              </div>
             </div>
           </div>
-        </div>
-        <div className="flex flex-1 flex-col">
-          <div className="flex-1">
-            <GhostlyProvider data={data}>{children}</GhostlyProvider>
+          <div className="flex flex-1 flex-col">
+            <div className="flex-1">{children}</div>
+            <div className="sm:pb-16 pb-8">
+              <Footer />
+            </div>
           </div>
-          <div className="sm:pb-16 pb-8">
-            <Footer />
-          </div>
-        </div>
-      </main>
+        </main>
+      </GhostlyProvider>
     </QueryClientProvider>
   );
 }

@@ -33,6 +33,14 @@ export function FavoriteGroupCard() {
   const favoriteGroupId = groupsResponse?.data?.favoriteGroupId;
   const group = groups.find((g) => g.id === favoriteGroupId);
 
+  if (isGroupsPending) {
+    return (
+      <Ghost name="favourite-group-card" isLoading>
+        {null}
+      </Ghost>
+    );
+  }
+
   if (!group) {
     return (
       <div className="border border-border rounded-xl bg-card shadow-sm">
@@ -71,7 +79,7 @@ export function FavoriteGroupCard() {
   );
 
   return (
-    <Ghost name="favourite-group-card" isLoading={isGroupsPending}>
+    <Ghost name="favourite-group-card" isLoading={false}>
       <div className="flex flex-col gap-4 border border-border rounded-xl bg-card p-4 sm:p-6 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
           <div className="flex items-center gap-3.5 min-w-0 flex-1">

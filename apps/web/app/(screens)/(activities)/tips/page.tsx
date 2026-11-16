@@ -192,30 +192,26 @@ export default function TipsScreen() {
             </ComboboxContent>
           </Combobox>
 
-          {gamesList.length === 0 ? (
+          {!isTipsPending && !isSeasonsPending && gamesList.length === 0 ? (
             <div className="mt-20 text-center text-sm text-muted-foreground">
               Für diese Saison sind noch keine Spiele vorhanden.
             </div>
           ) : (
-            <Table className="table-fixed">
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="hidden md:table-cell md:w-24 lg:w-30">
-                    Spielzeit
-                  </TableHead>
-                  <TableHead className="text-right">Heimteam</TableHead>
-                  <TableHead className="w-20 sm:w-24 text-center">
-                    Tipp
-                  </TableHead>
-                  <TableHead className="text-left">Gastteam</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <Ghost
-                  name="games"
-                  isLoading={isTipsPending || isSeasonsPending}
-                  count={8}
-                >
+            <Ghost name="games" isLoading={isTipsPending || isSeasonsPending}>
+              <Table className="table-fixed">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="hidden md:table-cell md:w-24 lg:w-30">
+                      Spielzeit
+                    </TableHead>
+                    <TableHead className="text-right">Heimteam</TableHead>
+                    <TableHead className="w-20 sm:w-24 text-center">
+                      Tipp
+                    </TableHead>
+                    <TableHead className="text-left">Gastteam</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {gamesList.map((game) => {
                     const myTip = myTips.get(game.id) ?? null;
                     const hasStarted = new Date(game.date).getTime() <= now;
@@ -310,9 +306,9 @@ export default function TipsScreen() {
                       </Fragment>
                     );
                   })}
-                </Ghost>
-              </TableBody>
-            </Table>
+                </TableBody>
+              </Table>
+            </Ghost>
           )}
         </div>
       </div>

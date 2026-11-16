@@ -121,26 +121,22 @@ export default function SeasonScreen() {
           </div>
 
           <div className="w-full">
-            <Table className="table-fixed">
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="hidden md:table-cell md:w-24 lg:w-30">
-                    Spielzeit
-                  </TableHead>
-                  <TableHead className="text-right">Heimteam</TableHead>
-                  <TableHead className="w-20 sm:w-24 text-center">
-                    Ergebnis
-                  </TableHead>
-                  <TableHead className="text-left">Gastteam</TableHead>
-                  {isAdmin && <TableHead className="w-10" />}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <Ghost
-                  name="season-table"
-                  isLoading={isSeasonsPending}
-                  count={8}
-                >
+            <Ghost name="season-table" isLoading={isSeasonsPending}>
+              <Table className="table-fixed">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="hidden md:table-cell md:w-24 lg:w-30">
+                      Spielzeit
+                    </TableHead>
+                    <TableHead className="text-right">Heimteam</TableHead>
+                    <TableHead className="w-20 sm:w-24 text-center">
+                      Ergebnis
+                    </TableHead>
+                    <TableHead className="text-left">Gastteam</TableHead>
+                    {isAdmin && <TableHead className="w-10" />}
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {games.map((game) => {
                     const dateObj = new Date(game.date);
                     const dateStr = dateObj.toLocaleDateString("de-DE", {
@@ -212,9 +208,9 @@ export default function SeasonScreen() {
                       </Fragment>
                     );
                   })}
-                </Ghost>
-              </TableBody>
-            </Table>
+                </TableBody>
+              </Table>
+            </Ghost>
           </div>
         </div>
       </div>
