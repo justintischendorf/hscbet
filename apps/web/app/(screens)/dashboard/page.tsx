@@ -1,5 +1,6 @@
 "use client";
 
+import { Ghost } from "ghostlyjs";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { MailWarning, ShieldAlert } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -22,7 +23,6 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { Separator } from "@/components/ui/separator";
-import { Skeleton } from "@/components/ui/skeleton";
 import { groupsQueryKey, groupsQueryFn } from "@/hooks/use-groups";
 import {
   notificationsQueryKey,
@@ -136,15 +136,11 @@ export default function DashboardScreen() {
   return (
     <main className="w-full sm:py-16 py-8 px-4 md:px-12 sm:px-6">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold tracking-tight">
-          {!user ? (
-            <Skeleton className="h-9 w-48" />
-          ) : (
-            <>
-              Hallo <span className="dark:text-huk-accent">{user.name}</span>!
-            </>
-          )}
-        </h1>
+        <Ghost name="dashboard-greeting" isLoading={!user}>
+          <h1 className="text-3xl font-bold tracking-tight">
+            Hallo <span className="dark:text-huk-accent">{user?.name}</span>!
+          </h1>
+        </Ghost>
         <div className="flex sm:flex-row flex-col items-end justify-between gap-4">
           <p className="text-base">
             Willkommen auf deinem Dashboard! Hier findest du eine Übersicht über
@@ -154,10 +150,7 @@ export default function DashboardScreen() {
         <Separator className="sm:my-8 my-6" />
         <div className="flex flex-col gap-6 md:gap-8">
           <FavoriteGroupCard />
-          <div className="flex flex-col gap-4 border border-border rounded-xl bg-card p-4 sm:p-6 shadow-sm">
-            <h2 className="text-lg font-semibold">Tipp-Statistik</h2>
-            <TipChart />
-          </div>
+          <TipChart />
         </div>
       </div>
 

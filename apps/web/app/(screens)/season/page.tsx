@@ -1,5 +1,6 @@
 "use client";
 
+import { Ghost } from "ghostlyjs";
 import { Fragment, useState } from "react";
 
 import { CLUB, NewGamePopup } from "@/components/new-game-popup";
@@ -17,7 +18,6 @@ import {
   ComboboxList,
 } from "@/components/ui/combobox";
 import { Separator } from "@/components/ui/separator";
-import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
   TableBody,
@@ -48,30 +48,36 @@ export default function SeasonScreen() {
     <main className="w-full sm:py-16 py-8 px-4 md:px-12 sm:px-6">
       <div className="max-w-4xl mx-auto">
         <div className="flex flex-col sm:gap-1">
-          <span className="text-lg">
-            {isSeasonsPending ? (
-              <Skeleton className="h-7 w-46" />
-            ) : (
-              currentSeason?.league
-            )}
-          </span>
+          <Ghost name="season-league" isLoading={isSeasonsPending}>
+            <span className="text-lg">{currentSeason?.league}</span>
+          </Ghost>
           <div className="flex sm:flex-row flex-col sm:gap-2 gap-0 items-baseline">
-            <h1 className="text-3xl font-bold tracking-tight">
-              {isSeasonsPending ? (
-                <Skeleton className="h-9 w-58" />
-              ) : (
-                currentSeason?.title
-              )}
-            </h1>
-            <span className="text-muted-foreground sm:text-sm text-xs">
-              {isSeasonsPending ? (
-                <Skeleton className="sm:h-5 sm:w-42 h-4 w-34" />
-              ) : currentSeason ? (
-                `${new Date(currentSeason.from).toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" })} - ${new Date(currentSeason.to).toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" })}`
-              ) : (
-                ""
-              )}
-            </span>
+            <Ghost name="season-title" isLoading={isSeasonsPending}>
+              <h1 className="text-3xl font-bold tracking-tight">
+                {currentSeason?.title}
+              </h1>
+            </Ghost>
+            <Ghost name="season-current" isLoading={isSeasonsPending}>
+              <span className="text-muted-foreground sm:text-sm text-xs">
+                {currentSeason
+                  ? `${new Date(currentSeason.from).toLocaleDateString(
+                      "de-DE",
+                      {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                      },
+                    )} - ${new Date(currentSeason.to).toLocaleDateString(
+                      "de-DE",
+                      {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                      },
+                    )}`
+                  : ""}
+              </span>
+            </Ghost>
           </div>
         </div>
         <div className="flex sm:flex-row flex-col items-end justify-between gap-4">
@@ -114,10 +120,8 @@ export default function SeasonScreen() {
             )}
           </div>
 
-          {isSeasonsPending ? (
-            <Skeleton className="h-96 w-full" />
-          ) : (
-            <div className="w-full">
+          <div className="w-full">
+            <Ghost name="season-table" isLoading={isSeasonsPending}>
               <Table className="table-fixed">
                 <TableHeader>
                   <TableRow>
@@ -206,8 +210,8 @@ export default function SeasonScreen() {
                   })}
                 </TableBody>
               </Table>
-            </div>
-          )}
+            </Ghost>
+          </div>
         </div>
       </div>
     </main>
