@@ -1,6 +1,7 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
+import { Ghost } from "ghostlyjs";
 import { Check, Inbox, Trash, Undo2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -225,123 +226,121 @@ export function InboxPopover() {
 
         <ScrollArea className="mt-2 min-h-0 flex-1 sm:mt-3">
           <div className="flex flex-col gap-1">
-            {isPending ? (
-              <p className="py-6 text-center text-sm text-muted-foreground">
-                Lädt...
-              </p>
-            ) : filteredNotifications.length === 0 ? (
+            {!isPending && filteredNotifications.length === 0 ? (
               <p className="py-6 text-center text-sm text-muted-foreground">
                 {filter === "unread"
                   ? "Keine ungelesenen Nachrichten"
                   : "Keine gelesenen Nachrichten"}
               </p>
             ) : (
-              filteredNotifications.map((n) => {
-                const isThisMarkingAsRead =
-                  isMarkingAsRead && markAsReadId === n.id;
-                const isThisMarkingAsUnread =
-                  isMarkingAsUnread && markAsUnreadId === n.id;
-                const isRowActionPending =
-                  isThisMarkingAsRead || isThisMarkingAsUnread;
+              <Ghost name="notifications" isLoading={isPending} count>
+                {filteredNotifications.map((n) => {
+                  const isThisMarkingAsRead =
+                    isMarkingAsRead && markAsReadId === n.id;
+                  const isThisMarkingAsUnread =
+                    isMarkingAsUnread && markAsUnreadId === n.id;
+                  const isRowActionPending =
+                    isThisMarkingAsRead || isThisMarkingAsUnread;
 
-                return (
-                  <div
-                    key={n.id}
-                    className={cn(
-                      "group flex items-start gap-1.5 rounded-lg px-2 py-1.5 transition-colors hover:bg-muted/60 sm:gap-2 sm:px-2.5 sm:py-2",
-                      !n.read && "bg-muted/40",
-                    )}
-                  >
-                    <div className="flex min-w-0 flex-1 flex-col items-start gap-0.5">
-                      <div className="flex w-full items-center gap-2">
-                        {!n.read && (
-                          <span className="size-1.5 shrink-0 rounded-full bg-huk-accent" />
-                        )}
-                        <span
-                          className={cn(
-                            "flex-1 truncate text-sm",
-                            !n.read
-                              ? "font-medium text-foreground"
-                              : "text-muted-foreground",
-                          )}
-                        >
-                          {n.message}
-                        </span>
-                      </div>
-                      <span className="text-xs text-muted-foreground">
-                        {new Date(n.createdAt).toLocaleString("de-DE", {
-                          day: "2-digit",
-                          month: "2-digit",
-                          year: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}{" "}
-                        Uhr
-                      </span>
-                      {n.type === "GROUP_INVITE" && (
-                        <Button
-                          type="button"
-                          size="sm"
-                          className="mt-1"
-                          disabled={
-                            isAcceptingInvite && acceptingInviteId === n.id
-                          }
-                          onClick={() => handleAcceptInvite(n.id)}
-                        >
-                          {isAcceptingInvite && acceptingInviteId === n.id ? (
-                            <Spinner />
-                          ) : (
-                            <Check />
-                          )}
-                          Beitreten
-                        </Button>
-                      )}
-                    </div>
-
+                  return (
                     <div
+                      key={n.id}
                       className={cn(
-                        "flex shrink-0 items-center gap-0.5 transition-opacity",
-                        isRowActionPending
-                          ? "opacity-100"
-                          : "opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-100",
+                        "group flex items-start gap-1.5 rounded-lg px-2 py-1.5 transition-colors hover:bg-muted/60 sm:gap-2 sm:px-2.5 sm:py-2",
+                        !n.read && "bg-muted/40",
                       )}
                     >
-                      {n.read ? (
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon-xs"
-                          title="Als ungelesen markieren"
-                          disabled={isThisMarkingAsUnread}
-                          onClick={() => handleMarkAsUnread(n.id)}
-                        >
-                          {isThisMarkingAsUnread ? <Spinner /> : <Undo2 />}
-                        </Button>
-                      ) : (
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon-xs"
-                          title="Als gelesen markieren"
-                          disabled={isThisMarkingAsRead}
-                          onClick={() => handleMarkAsRead(n.id)}
-                        >
-                          {isThisMarkingAsRead ? <Spinner /> : <Check />}
-                        </Button>
-                      )}
-                      <Button
-                        type="button"
-                        variant="destructive"
-                        size="icon-xs"
-                        title="Löschen"
-                        onClick={() => handleDelete(n.id)}
+                      <div className="flex min-w-0 flex-1 flex-col items-start gap-0.5">
+                        <div className="flex w-full items-center gap-2">
+                          {!n.read && (
+                            <span className="size-1.5 shrink-0 rounded-full bg-huk-accent" />
+                          )}
+                          <span
+                            className={cn(
+                              "flex-1 truncate text-sm",
+                              !n.read
+                                ? "font-medium text-foreground"
+                                : "text-muted-foreground",
+                            )}
+                          >
+                            {n.message}
+                          </span>
+                        </div>
+                        <span className="text-xs text-muted-foreground">
+                          {new Date(n.createdAt).toLocaleString("de-DE", {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}{" "}
+                          Uhr
+                        </span>
+                        {n.type === "GROUP_INVITE" && (
+                          <Button
+                            type="button"
+                            size="sm"
+                            className="mt-1"
+                            disabled={
+                              isAcceptingInvite && acceptingInviteId === n.id
+                            }
+                            onClick={() => handleAcceptInvite(n.id)}
+                          >
+                            {isAcceptingInvite && acceptingInviteId === n.id ? (
+                              <Spinner />
+                            ) : (
+                              <Check />
+                            )}
+                            Beitreten
+                          </Button>
+                        )}
+                      </div>
+
+                      <div
+                        className={cn(
+                          "flex shrink-0 items-center gap-0.5 transition-opacity",
+                          isRowActionPending
+                            ? "opacity-100"
+                            : "opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-100",
+                        )}
                       >
-                        <Trash />
-                      </Button>
+                        {n.read ? (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon-xs"
+                            title="Als ungelesen markieren"
+                            disabled={isThisMarkingAsUnread}
+                            onClick={() => handleMarkAsUnread(n.id)}
+                          >
+                            {isThisMarkingAsUnread ? <Spinner /> : <Undo2 />}
+                          </Button>
+                        ) : (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon-xs"
+                            title="Als gelesen markieren"
+                            disabled={isThisMarkingAsRead}
+                            onClick={() => handleMarkAsRead(n.id)}
+                          >
+                            {isThisMarkingAsRead ? <Spinner /> : <Check />}
+                          </Button>
+                        )}
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="icon-xs"
+                          title="Löschen"
+                          onClick={() => handleDelete(n.id)}
+                        >
+                          <Trash />
+                        </Button>
+                      </div>
                     </div>
-                  </div>
-                );
-              })
+                  );
+                })}
+              </Ghost>
             )}
           </div>
         </ScrollArea>
