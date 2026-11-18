@@ -35,7 +35,7 @@ export function FavoriteGroupCard() {
 
   if (isGroupsPending) {
     return (
-      <Ghost name="favourite-group-card" isLoading>
+      <Ghost name="favourite-group-card" isLoading={isGroupsPending}>
         {null}
       </Ghost>
     );
@@ -79,7 +79,7 @@ export function FavoriteGroupCard() {
   );
 
   return (
-    <Ghost name="favourite-group-card" isLoading={false}>
+    <Ghost name="favourite-group-card" isLoading={isGroupsPending}>
       <div className="flex flex-col gap-4 border border-border rounded-xl bg-card p-4 sm:p-6 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
           <div className="flex items-center gap-3.5 min-w-0 flex-1">

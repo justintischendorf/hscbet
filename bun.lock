@@ -46,7 +46,7 @@
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "date-fns": "^4.4.0",
-        "ghostlyjs": "^0.2.0",
+        "ghostlyjs": "^0.3.0",
         "input-otp": "^1.5.0",
         "lucide-react": "^1.73.0",
         "next": "16.4.6",
@@ -1135,7 +1135,7 @@
 
     "get-stream": ["get-stream@9.0.1", "", { "dependencies": { "@sec-ant/readable-stream": "^0.4.1", "is-stream": "^4.0.1" } }, "sha512-kVCxPF3vQM/N0B1PmoqVUqgHP+EeVjmZSQn+1oCRPxd2P21P2F19lIgbR3HBosbB1PUhOAoctJnfEn2GbN2eZA=="],
 
-    "ghostlyjs": ["ghostlyjs@0.2.0", "", { "dependencies": { "@clack/prompts": "^1.9.0", "playwright-core": "^1.65.1" }, "peerDependencies": { "react": ">=18" }, "bin": { "ghostly": "dist/cli/index.js" } }, "sha512-PHIlFaaUV/lXGhvyVyamaZoDqFKRmqh2hHgLgt+1RmrYo/iUDlIKdJd3DHgOyBHBdBdLSg8UHXAVe7j78VriNQ=="],
+    "ghostlyjs": ["ghostlyjs@0.3.0", "", { "dependencies": { "@clack/prompts": "^1.9.0", "playwright-core": "^1.65.1" }, "peerDependencies": { "react": ">=18" }, "bin": { "ghostly": "dist/cli/index.js" } }, "sha512-lSMmAoAkTT8cGpHCa+wMCjdwZRkEjblQBME9zV9QXQenWOh/ycKvK2c2HO3WWc5JORCp1vpVch67iMDVBMNQ7w=="],
 
     "giget": ["giget@3.3.1", "", { "bin": { "giget": "dist/cli.mjs" } }, "sha512-r+mvuDjrjMpsdw46Kmeydb8bdHm7wOKw8wNBtTndkjbPjgAp5oUJUxRE76wZFknxIPokfWvep2qSXK37aXE6zg=="],
 
