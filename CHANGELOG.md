@@ -8,6 +8,43 @@ and this project adheres to
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-11-19
+
+### Added
+
+- Loading placeholders with [ghostlyjs](https://www.npmjs.com/package/ghostlyjs):
+  while data loads, pages show a skeleton in the shape of the real
+  content instead of an empty area. Covers the dashboard, tips, season,
+  groups, group stats, account settings, 2FA, the inbox and the navbar
+  avatar. The shapes are measured from the real components and stored in
+  `apps/web/ghostly.json`. Replaces the old `ui/skeleton` component.
+  ([#79], [#80])
+
+### Changed
+
+- Rate limit: at most 300 requests per minute per IP (previously 50).
+  Failed requests count too, and whoever goes over the limit is blocked
+  for two minutes. Behind a reverse proxy the IP is now taken from the
+  last entry of `X-Forwarded-For`, which the client cannot spoof. ([#82])
+- Error handling moved into its own plugin (`apps/api/src/errors.ts`).
+  Group and notification errors now return proper status codes (404, 403,
+  409, 422) with a fixed error code instead of a 500. Invalid requests
+  return 400 or 422, unknown routes 404. ([#82])
+- Request logging now also logs requests that end in an error, with the
+  actual status code. ([#82])
+- While seasons are loading, the season picker on the tips, season and
+  group stats pages shows a spinner instead of "Laden...". ([#81])
+- The system diagram in `docs/architecture` has been redrawn and now
+  shows the whole architecture: web app, API gateway and all modules,
+  SQLite, Redis (queue and pub/sub), MinIO, Resend, the worker, the
+  shared packages and the scripts. ([#83])
+
+### Fixed
+
+- Group stats no longer show members' tips for games that have not
+  started yet. Upcoming games show "-", finished games show the result.
+  ([#81])
+
 ## [1.1.1] - 2026-11-16
 
 ### Changed
@@ -187,7 +224,8 @@ First release of the prediction game platform for HSC 2000 Coburg.
 - README with guides for development and production, a system diagram and
   `.env.example` files. ([#8], [#53], [#55])
 
-[Unreleased]: https://github.com/justintischendorf/hscbet/compare/v1.1.1...HEAD
+[Unreleased]: https://github.com/justintischendorf/hscbet/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/justintischendorf/hscbet/compare/v1.1.1...v1.2.0
 [1.1.1]: https://github.com/justintischendorf/hscbet/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/justintischendorf/hscbet/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/justintischendorf/hscbet/releases/tag/v1.0.0
@@ -254,3 +292,8 @@ First release of the prediction game platform for HSC 2000 Coburg.
 [#67]: https://github.com/justintischendorf/hscbet/pull/67
 [#72]: https://github.com/justintischendorf/hscbet/pull/72
 [#76]: https://github.com/justintischendorf/hscbet/pull/76
+[#79]: https://github.com/justintischendorf/hscbet/pull/79
+[#80]: https://github.com/justintischendorf/hscbet/pull/80
+[#81]: https://github.com/justintischendorf/hscbet/pull/81
+[#82]: https://github.com/justintischendorf/hscbet/pull/82
+[#83]: https://github.com/justintischendorf/hscbet/pull/83
