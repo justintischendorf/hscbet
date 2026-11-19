@@ -1,5 +1,6 @@
 "use client";
 
+import { Ghost } from "ghostlyjs";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { Eye, EyeOff, Info, ShieldAlert } from "lucide-react";
 import Image from "next/image";
@@ -136,19 +137,21 @@ export default function AccountSettings() {
         <Separator className="sm:my-8 my-6" />
 
         <div className="flex flex-col gap-6 md:gap-8">
-          <div className="flex flex-row items-center justify-between border border-border rounded-xl bg-card p-4 sm:p-6 shadow-sm">
-            <div className="flex flex-col">
-              <h2 className="text-lg font-semibold">Status</h2>
-              <p className={`text-sm ${statusClass}`}>{statusText}</p>
+          <Ghost name="2fa-status" isLoading={!user}>
+            <div className="flex flex-row items-center justify-between border border-border rounded-xl bg-card p-4 sm:p-6 shadow-sm">
+              <div className="flex flex-col">
+                <h2 className="text-lg font-semibold">Status</h2>
+                <p className={`text-sm ${statusClass}`}>{statusText}</p>
+              </div>
+              <Button
+                type="button"
+                variant="default"
+                onClick={openPasswordDialog}
+              >
+                {actionLabel}
+              </Button>
             </div>
-            <Button
-              type="button"
-              variant="default"
-              onClick={openPasswordDialog}
-            >
-              {actionLabel}
-            </Button>
-          </div>
+          </Ghost>
 
           <AlertDialog
             open={passwordDialogOpen}

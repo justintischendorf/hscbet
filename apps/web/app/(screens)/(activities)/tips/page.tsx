@@ -1,6 +1,7 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
+import { Ghost } from "ghostlyjs";
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 
@@ -15,7 +16,6 @@ import {
 } from "@/components/ui/combobox";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
 import {
   Table,
@@ -176,10 +176,17 @@ export default function TipsScreen() {
             value={selectedSeasonId}
             onValueChange={(val) => setPickedSeasonId(val ?? "")}
           >
-            <ComboboxInput
-              placeholder="Wähle eine Saison"
-              value={isSeasonsPending ? "Laden..." : selectedSeasonTitle}
-            />
+            {isSeasonsPending ? (
+              <div className="flex gap-2 items-center">
+                <Spinner /> Lade Saisondaten...
+              </div>
+            ) : (
+              <ComboboxInput
+                className="flex-1"
+                placeholder="Wähle eine Saison"
+                value={selectedSeasonTitle}
+              />
+            )}
             <ComboboxContent>
               <ComboboxEmpty>Keine Saison gefunden.</ComboboxEmpty>
               <ComboboxList>
@@ -192,115 +199,123 @@ export default function TipsScreen() {
             </ComboboxContent>
           </Combobox>
 
-          {isSeasonsPending || isTipsPending ? (
-            <Skeleton className="h-96 w-full" />
-          ) : gamesList.length > 0 ? (
-            <Table className="table-fixed">
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="hidden md:table-cell md:w-24 lg:w-30">
-                    Spielzeit
-                  </TableHead>
-                  <TableHead className="text-right">Heimteam</TableHead>
-                  <TableHead className="w-20 sm:w-24 text-center">
-                    Tipp
-                  </TableHead>
-                  <TableHead className="text-left">Gastteam</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {gamesList.map((game) => {
-                  const myTip = myTips.get(game.id) ?? null;
-                  const hasStarted = new Date(game.date).getTime() <= now;
-
-                  if (hasStarted) {
-                    return (
-                      <Tip key={game.id} tipData={myTip} gameData={game} />
-                    );
-                  }
-
-                  const draft = getDraft(game.id);
-                  const isSavingThisTip =
-                    isSavingTip && savingTipVariables?.gameId === game.id;
-                  const dateObj = new Date(game.date);
-                  const dateStr = dateObj.toLocaleDateString("de-DE", {
-                    day: "2-digit",
-                    month: "2-digit",
-                    year: "numeric",
-                  });
-                  const timeOnly =
-                    dateObj.toLocaleTimeString("de-DE", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    }) + " Uhr";
-
-                  return (
-                    <Fragment key={game.id}>
-                      <TableRow className="border-none hover:bg-transparent md:hidden">
-                        <TableCell
-                          colSpan={3}
-                          className="pt-3 pb-0 text-center text-xs text-muted-foreground"
-                        >
-                          {dateStr} · {timeOnly}
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell className="hidden md:table-cell py-3">
-                          <div className="text-sm font-medium">{dateStr}</div>
-                          <div className="text-xs text-muted-foreground">
-                            {timeOnly}
-                          </div>
-                        </TableCell>
-                        <TableCell className="truncate text-right py-3 text-xs sm:text-sm font-semibold">
-                          {game.host}
-                        </TableCell>
-                        <TableCell className="py-3 px-1 sm:px-2">
-                          <div className="flex items-center justify-center gap-1">
-                            <Input
-                              type="number"
-                              min={0}
-                              max={99}
-                              placeholder="0"
-                              className="w-8 px-1 text-center shrink-0"
-                              disabled={!userId}
-                              value={draft.host}
-                              onChange={(e) =>
-                                handleFieldChange(game, "host", e.target.value)
-                              }
-                            />
-                            <span className="text-sm text-muted-foreground shrink-0">
-                              :
-                            </span>
-                            <Input
-                              type="number"
-                              min={0}
-                              max={99}
-                              placeholder="0"
-                              className="w-8 px-1 text-center shrink-0"
-                              disabled={!userId}
-                              value={draft.guest}
-                              onChange={(e) =>
-                                handleFieldChange(game, "guest", e.target.value)
-                              }
-                            />
-                            {isSavingThisTip && (
-                              <Spinner className="shrink-0" />
-                            )}
-                          </div>
-                        </TableCell>
-                        <TableCell className="truncate text-left py-3 text-xs sm:text-sm font-semibold">
-                          {game.guest}
-                        </TableCell>
-                      </TableRow>
-                    </Fragment>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          ) : (
+          {!isTipsPending && !isSeasonsPending && gamesList.length === 0 ? (
             <div className="mt-20 text-center text-sm text-muted-foreground">
               Für diese Saison sind noch keine Spiele vorhanden.
             </div>
+          ) : (
+            <Ghost name="games" isLoading={isTipsPending || isSeasonsPending}>
+              <Table className="table-fixed">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="hidden md:table-cell md:w-24 lg:w-30">
+                      Spielzeit
+                    </TableHead>
+                    <TableHead className="text-right">Heimteam</TableHead>
+                    <TableHead className="w-20 sm:w-24 text-center">
+                      Tipp
+                    </TableHead>
+                    <TableHead className="text-left">Gastteam</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {gamesList.map((game) => {
+                    const myTip = myTips.get(game.id) ?? null;
+                    const hasStarted = new Date(game.date).getTime() <= now;
+
+                    if (hasStarted) {
+                      return (
+                        <Tip key={game.id} tipData={myTip} gameData={game} />
+                      );
+                    }
+
+                    const draft = getDraft(game.id);
+                    const isSavingThisTip =
+                      isSavingTip && savingTipVariables?.gameId === game.id;
+                    const dateObj = new Date(game.date);
+                    const dateStr = dateObj.toLocaleDateString("de-DE", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                    });
+                    const timeOnly =
+                      dateObj.toLocaleTimeString("de-DE", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      }) + " Uhr";
+
+                    return (
+                      <Fragment key={game.id}>
+                        <TableRow className="border-none hover:bg-transparent md:hidden">
+                          <TableCell
+                            colSpan={3}
+                            className="pt-3 pb-0 text-center text-xs text-muted-foreground"
+                          >
+                            {dateStr} · {timeOnly}
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="hidden md:table-cell py-3">
+                            <div className="text-sm font-medium">{dateStr}</div>
+                            <div className="text-xs text-muted-foreground">
+                              {timeOnly}
+                            </div>
+                          </TableCell>
+                          <TableCell className="truncate text-right py-3 text-xs sm:text-sm font-semibold">
+                            {game.host}
+                          </TableCell>
+                          <TableCell className="py-3 px-1 sm:px-2">
+                            <div className="flex items-center justify-center gap-1">
+                              <Input
+                                type="number"
+                                min={0}
+                                max={99}
+                                placeholder="0"
+                                className="w-8 px-1 text-center shrink-0"
+                                disabled={!userId}
+                                value={draft.host}
+                                onChange={(e) =>
+                                  handleFieldChange(
+                                    game,
+                                    "host",
+                                    e.target.value,
+                                  )
+                                }
+                              />
+                              <span className="text-sm text-muted-foreground shrink-0">
+                                :
+                              </span>
+                              <Input
+                                type="number"
+                                min={0}
+                                max={99}
+                                placeholder="0"
+                                className="w-8 px-1 text-center shrink-0"
+                                disabled={!userId}
+                                value={draft.guest}
+                                onChange={(e) =>
+                                  handleFieldChange(
+                                    game,
+                                    "guest",
+                                    e.target.value,
+                                  )
+                                }
+                              />
+                              {isSavingThisTip && (
+                                <Spinner className="shrink-0" />
+                              )}
+                            </div>
+                          </TableCell>
+                          <TableCell className="truncate text-left py-3 text-xs sm:text-sm font-semibold">
+                            {game.guest}
+                          </TableCell>
+                        </TableRow>
+                      </Fragment>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </Ghost>
           )}
         </div>
       </div>

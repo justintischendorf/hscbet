@@ -13,12 +13,12 @@ through Prisma, MinIO for images and Redis for the queue and pub/sub.
 
 ## Architecture
 
-![System diagram: client → treaty → API gateway with modules → SQLite, S3, message queue, worker, pub/sub and WebSocket](docs/architecture/system-diagram.png)
+![System diagram: Next.js web app → Treaty/Better Auth/WebSocket → Elysia API gateway with modules → SQLite, Redis (queue, pub/sub), MinIO S3 and Resend; worker consumes the queue and publishes events back over pub/sub](docs/architecture/system-diagram.png)
 
 The frontend calls the API through the typed Treaty client. API modules store
-data in SQLite and files in S3 (MinIO). Group and admin actions put jobs into
-the queue (Redis), which the worker processes. Results go back to the API via
-pub/sub and from there to the client over a WebSocket.
+data in SQLite and files in S3 (MinIO). Season, group and admin actions put
+jobs into the queue (Redis), which the worker processes. Results go back to the
+API via pub/sub and from there to the client over a WebSocket.
 
 | Path                | Content                                               |
 | ------------------- | ----------------------------------------------------- |
