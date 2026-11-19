@@ -83,7 +83,7 @@ export abstract class GroupService {
     });
 
     if (!group) {
-      throw new Error("Gruppe nicht gefunden");
+      throw new Error("GROUP_NOT_FOUND");
     }
 
     await prisma.user.update({
@@ -213,11 +213,11 @@ export abstract class GroupService {
     });
 
     if (!group) {
-      throw new Error("Gruppe nicht gefunden");
+      throw new Error("GROUP_NOT_FOUND");
     }
 
     if (group.leaderId !== user.id) {
-      throw new Error("Nur der Gruppenleiter kann die Gruppe bearbeiten");
+      throw new Error("NOT_GROUP_LEADER");
     }
 
     if (body.fileId) {
@@ -227,7 +227,7 @@ export abstract class GroupService {
       });
 
       if (!file || file.userId !== user.id) {
-        throw new Error("Bild nicht gefunden");
+        throw new Error("FILE_NOT_FOUND");
       }
     }
 
@@ -285,23 +285,23 @@ export abstract class GroupService {
     });
 
     if (!group) {
-      throw new Error("Gruppe nicht gefunden");
+      throw new Error("GROUP_NOT_FOUND");
     }
 
     if (group.leaderId !== user.id) {
-      throw new Error("Nur der Gruppenleiter kann Spieler einladen");
+      throw new Error("NOT_GROUP_LEADER");
     }
 
     if (body.playerId === user.id) {
-      throw new Error("Du kannst dich nicht selbst einladen");
+      throw new Error("CANNOT_INVITE_SELF");
     }
 
     if (group.members.some((member) => member.id === body.playerId)) {
-      throw new Error("Spieler ist bereits Mitglied der Gruppe");
+      throw new Error("ALREADY_GROUP_MEMBER");
     }
 
     if (group.members.length >= MAX_GROUP_MEMBERS) {
-      throw new Error("Die Gruppe hat die maximale Mitgliederzahl erreicht");
+      throw new Error("GROUP_FULL");
     }
 
     const invitedPlayer = await prisma.user.findUnique({
@@ -310,7 +310,7 @@ export abstract class GroupService {
     });
 
     if (!invitedPlayer) {
-      throw new Error("Spieler nicht gefunden");
+      throw new Error("PLAYER_NOT_FOUND");
     }
 
     await queueManager.produce({

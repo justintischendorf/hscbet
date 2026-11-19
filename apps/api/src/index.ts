@@ -1,11 +1,12 @@
 import cron, { Patterns } from "@elysia/cron";
 import { cors } from "@elysiajs/cors";
 import { Elysia } from "elysia";
-import { rateLimit } from "elysia-rate-limit";
+import { DefaultContext, rateLimit } from "elysia-rate-limit";
 
 import { createLogger } from "@repo/logger";
 
 import { contextPlugin } from "./context";
+import { errorPlugin } from "./errors";
 import { S3Service } from "./global/services/s3-service";
 import { admin } from "./modules/admin";
 import { authPlugin } from "./modules/auth";
@@ -32,29 +33,54 @@ const app = new Elysia({ prefix: "/api" })
   )
   .use(
     rateLimit({
-      duration: 60000,
-      max: 500,
+      duration: 60_000,
+      max: 300,
+      context: new (class extends DefaultContext {
+        private blocked = new WeakSet<object>();
+        override async increment(
+          key: string,
+          duration?: number,
+          requestTime?: number,
+        ) {
+          const item = await super.increment(key, duration, requestTime);
+          if (item.count > 300 && !this.blocked.has(item)) {
+            this.blocked.add(item);
+            item.nextReset = new Date((requestTime ?? Date.now()) + 2 * 60_000);
+          }
+          return item;
+        }
+      })(),
+      countFailedRequest: true,
       generator: (request, server) => {
         const forwardedFor = request.headers.get("x-forwarded-for");
         if (forwardedFor) {
-          return forwardedFor.split(",")[0]?.trim() ?? "unknown";
+          return forwardedFor.split(",").pop()?.trim() || "unknown";
         }
         const ip = server?.requestIP(request)?.address;
         return ip || "unknown";
       },
-      errorResponse: new Error("rate-limit"),
+      errorResponse: new Response(
+        JSON.stringify({
+          success: false,
+          message: "Zu viele Anfragen, bitte warte einen Moment.",
+          error: "RATE_LIMITED",
+        }),
+        { status: 429, headers: { "Content-Type": "application/json" } },
+      ),
     }),
   )
   .derive({ as: "global" }, () => ({
     requestStart: Date.now(),
   }))
-  .onAfterHandle(({ request, set, requestStart }) => {
-    const durationMs = Date.now() - requestStart;
+  .onAfterResponse(({ request, set, requestStart, responseValue }) => {
     const url = new URL(request.url);
     const path = `${url.pathname}${url.search}`;
-    logger.info(
-      `${request.method} ${path} status=${set.status ?? 200} duration=${durationMs}ms`,
-    );
+    const duration = requestStart
+      ? ` duration=${Date.now() - requestStart}ms`
+      : "";
+    const status =
+      responseValue instanceof Response ? responseValue.status : set.status;
+    logger.info(`${request.method} ${path} status=${status ?? 200}${duration}`);
   })
   .use(
     cron({
@@ -66,8 +92,9 @@ const app = new Elysia({ prefix: "/api" })
       },
     }),
   )
-  .use(admin)
+  .use(errorPlugin)
   .use(authPlugin)
+  .use(admin)
   .use(socket)
   .use(media)
   .use(rank)
@@ -76,137 +103,7 @@ const app = new Elysia({ prefix: "/api" })
   .use(group)
   .use(season)
   .use(notification)
-  .onError(({ error, set }) => {
-    if (error instanceof Error && error.message === "rate-limit") {
-      set.status = 429;
-      logger.warn("Rate-Limit erreicht");
-      return {
-        success: false,
-        message: "Zu viele Anfragen, bitte warte einen Moment.",
-        error: "RATE_LIMITED",
-      };
-    }
 
-    if (error instanceof Error && error.message === "DUPLICATE_TIP") {
-      set.status = 409;
-      logger.warn("Tipp für dieses Spiel bereits abgegeben");
-      return {
-        success: false,
-        message: "Du hast für dieses Spiel bereits einen Tipp abgegeben",
-        error: "DUPLICATE_TIP",
-      };
-    }
-
-    if (error instanceof Error && error.message === "GAME_ALREADY_STARTED") {
-      set.status = 409;
-      logger.warn("Spiel hat bereits begonnen, Tipp nicht mehr änderbar");
-      return {
-        success: false,
-        message:
-          "Das Spiel hat bereits begonnen, dein Tipp kann nicht mehr geändert werden.",
-        error: "GAME_ALREADY_STARTED",
-      };
-    }
-
-    if (error instanceof Error && error.message === "Unauthorized") {
-      set.status = 401;
-      logger.warn("Nicht autorisiert");
-      return {
-        success: false,
-        message: "Nicht autorisiert",
-        error: "UNAUTHORIZED",
-      };
-    }
-
-    if (error instanceof Error && error.message === "FORBIDDEN") {
-      set.status = 403;
-      logger.warn("Keine Berechtigung");
-      return {
-        success: false,
-        message: "Du hast keine Berechtigung für diese Aktion",
-        error: "FORBIDDEN",
-      };
-    }
-
-    if (error instanceof Error && error.message === "INVALID_SEASON_RANGE") {
-      set.status = 422;
-      logger.warn("Ungültiger Saisonzeitraum");
-      return {
-        success: false,
-        message: "Das Startdatum muss vor dem Enddatum liegen",
-        error: "INVALID_SEASON_RANGE",
-      };
-    }
-
-    if (error instanceof Error && error.message === "SEASON_NOT_FOUND") {
-      set.status = 404;
-      logger.warn("Saison nicht gefunden");
-      return {
-        success: false,
-        message: "Saison nicht gefunden",
-        error: "SEASON_NOT_FOUND",
-      };
-    }
-
-    if (error instanceof Error && error.message === "SEASON_EXCLUDES_GAMES") {
-      set.status = 422;
-      logger.warn("Saisonzeitraum schließt bestehende Spiele aus");
-      return {
-        success: false,
-        message:
-          "Der Zeitraum muss alle Spiele der Saison enthalten. Verschiebe oder lösche diese Spiele zuerst.",
-        error: "SEASON_EXCLUDES_GAMES",
-      };
-    }
-
-    if (error instanceof Error && error.message === "GAME_NOT_FOUND") {
-      set.status = 404;
-      logger.warn("Spiel nicht gefunden");
-      return {
-        success: false,
-        message: "Spiel nicht gefunden",
-        error: "GAME_NOT_FOUND",
-      };
-    }
-
-    if (error instanceof Error && error.message === "GAME_OUTSIDE_SEASON") {
-      set.status = 422;
-      logger.warn("Spiel liegt außerhalb des Saisonzeitraums");
-      return {
-        success: false,
-        message: "Das Spiel muss innerhalb des Saisonzeitraums liegen",
-        error: "GAME_OUTSIDE_SEASON",
-      };
-    }
-
-    if (error instanceof Error && error.message === "INCOMPLETE_GAME_RESULT") {
-      set.status = 422;
-      logger.warn("Spielergebnis unvollständig");
-      return {
-        success: false,
-        message: "Bitte trage die Tore beider Mannschaften ein",
-        error: "INCOMPLETE_GAME_RESULT",
-      };
-    }
-
-    if (error instanceof Error && error.message.includes("validation")) {
-      set.status = 422;
-      logger.warn("Validierungsfehler");
-      return {
-        success: false,
-        message: "Validierungsfehler",
-        error: "VALIDATION_ERROR",
-      };
-    }
-
-    set.status = 500;
-    logger.error("Interner Serverfehler");
-    return {
-      success: false,
-      message: "Ein Fehler ist aufgetreten",
-      error: "INTERNAL_SERVER_ERROR",
-    };
-  })
   .listen(process.env.API_SERVER_PORT || 3001);
 
 logger.info(`🦊 Elysia läuft auf http://localhost:${app.server?.port}`);
