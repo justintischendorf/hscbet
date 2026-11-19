@@ -176,10 +176,17 @@ export default function TipsScreen() {
             value={selectedSeasonId}
             onValueChange={(val) => setPickedSeasonId(val ?? "")}
           >
-            <ComboboxInput
-              placeholder="Wähle eine Saison"
-              value={isSeasonsPending ? "Laden..." : selectedSeasonTitle}
-            />
+            {isSeasonsPending ? (
+              <div className="flex gap-2 items-center">
+                <Spinner /> Lade Saisondaten...
+              </div>
+            ) : (
+              <ComboboxInput
+                className="flex-1"
+                placeholder="Wähle eine Saison"
+                value={selectedSeasonTitle}
+              />
+            )}
             <ComboboxContent>
               <ComboboxEmpty>Keine Saison gefunden.</ComboboxEmpty>
               <ComboboxList>
