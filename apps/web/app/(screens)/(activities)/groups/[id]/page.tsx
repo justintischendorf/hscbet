@@ -13,6 +13,7 @@ import {
   ComboboxList,
 } from "@/components/ui/combobox";
 import { Separator } from "@/components/ui/separator";
+import { Spinner } from "@/components/ui/spinner";
 import {
   Table,
   TableBody,
@@ -67,6 +68,10 @@ export default function GroupStats() {
 
   const gamesList = currentSeason?.game ?? [];
 
+  const isFutureGame = (gameDate: Date) => {
+    return new Date(gameDate) > new Date();
+  };
+
   return (
     <main className="w-full sm:py-16 py-8 px-4 md:px-12 sm:px-6">
       <div className="max-w-4xl mx-auto">
@@ -85,10 +90,17 @@ export default function GroupStats() {
             value={selectedSeasonId}
             onValueChange={(val) => setPickedSeasonId(val ?? "")}
           >
-            <ComboboxInput
-              placeholder="Wähle eine Saison"
-              value={isSeasonsPending ? "Laden..." : selectedSeasonTitle}
-            />
+            {isSeasonsPending ? (
+              <div className="flex gap-2 items-center">
+                <Spinner /> Lade Saisondaten...
+              </div>
+            ) : (
+              <ComboboxInput
+                className="flex-1"
+                placeholder="Wähle eine Saison"
+                value={selectedSeasonTitle}
+              />
+            )}
             <ComboboxContent>
               <ComboboxEmpty>Keine Saison gefunden.</ComboboxEmpty>
               <ComboboxList>
@@ -170,22 +182,32 @@ export default function GroupStats() {
                           >
                             {userTip ? (
                               <div className="flex flex-col items-center gap-1">
-                                <span className="font-medium tabular-nums">
-                                  {userTip.tipHost} : {userTip.tipGuest}
-                                </span>
+                                {isFutureGame(game.date) ? (
+                                  <span className="text-muted-foreground">
+                                    -
+                                  </span>
+                                ) : (
+                                  <span className="font-medium tabular-nums">
+                                    {game.hostPoints} : {game.guestPoints}
+                                  </span>
+                                )}
                                 {(() => {
                                   const result = userTip.result ?? 0;
                                   return (
                                     <span
                                       className={cn(
-                                        "rounded px-1.5 py-0.5 text-[10px] font-semibold leading-none tabular-nums",
+                                        isFutureGame(game.date)
+                                          ? ""
+                                          : "rounded px-1.5 py-0.5 text-[10px] font-semibold leading-none tabular-nums",
                                         result > 0
                                           ? "bg-positive/10 text-positive"
                                           : "bg-muted text-muted-foreground",
                                       )}
                                     >
                                       {result > 0 ? "+" : ""}
-                                      {formatPoints(result)} Pkt.
+                                      {isFutureGame(game.date)
+                                        ? ""
+                                        : `${formatPoints(result)} Pkt.`}
                                     </span>
                                   );
                                 })()}

@@ -18,6 +18,7 @@ import {
   ComboboxList,
 } from "@/components/ui/combobox";
 import { Separator } from "@/components/ui/separator";
+import { Spinner } from "@/components/ui/spinner";
 import {
   Table,
   TableBody,
@@ -99,11 +100,17 @@ export default function SeasonScreen() {
               value={selectedSeasonId}
               onValueChange={(val) => setPickedSeasonId(val ?? "")}
             >
-              <ComboboxInput
-                className="flex-1"
-                placeholder="Wähle eine Saison"
-                value={isSeasonsPending ? "Laden..." : selectedSeasonTitle}
-              />
+              {isSeasonsPending ? (
+                <div className="flex gap-2 items-center">
+                  <Spinner /> Lade Saisondaten...
+                </div>
+              ) : (
+                <ComboboxInput
+                  className="flex-1"
+                  placeholder="Wähle eine Saison"
+                  value={selectedSeasonTitle}
+                />
+              )}
               <ComboboxContent>
                 <ComboboxEmpty>Keine Saison gefunden.</ComboboxEmpty>
                 <ComboboxList>
