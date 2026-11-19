@@ -10,7 +10,7 @@ export const sessionPlugin = new Elysia({ name: "session" }).derive(
 
     if (!session) {
       set.status = 401;
-      throw new Error("Unauthorized");
+      throw new Error("UNAUTHORIZED");
     }
 
     return {

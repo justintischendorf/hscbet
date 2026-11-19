@@ -1,29 +1,38 @@
 {
-  "format_on_save": "on",
+  "lsp": {
+    "oxlint": {
+      "initialization_options": {
+        "settings": {
+          "run": "onType",
+          "fixKind": "safe_fix"
+        }
+      }
+    }
+  },
   "languages": {
     "TypeScript": {
-      "formatter": {
-        "external": {
-          "command": "bunx",
-          "arguments": ["oxfmt", "--stdin-filepath", "{buffer_path}"],
-        },
-      },
+      "format_on_save": "on",
+      "prettier": { "allowed": false },
+      "formatter": [
+        { "code_action": "source.fixAll.oxc" },
+        { "language_server": { "name": "oxfmt" } }
+      ]
     },
     "TSX": {
-      "formatter": {
-        "external": {
-          "command": "bunx",
-          "arguments": ["oxfmt", "--stdin-filepath", "{buffer_path}"],
-        },
-      },
+      "format_on_save": "on",
+      "prettier": { "allowed": false },
+      "formatter": [
+        { "code_action": "source.fixAll.oxc" },
+        { "language_server": { "name": "oxfmt" } }
+      ]
     },
     "JavaScript": {
-      "formatter": {
-        "external": {
-          "command": "bunx",
-          "arguments": ["oxfmt", "--stdin-filepath", "{buffer_path}"],
-        },
-      },
-    },
-  },
+      "format_on_save": "on",
+      "prettier": { "allowed": false },
+      "formatter": [
+        { "code_action": "source.fixAll.oxc" },
+        { "language_server": { "name": "oxfmt" } }
+      ]
+    }
+  }
 }

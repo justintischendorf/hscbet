@@ -33,7 +33,7 @@ export abstract class NotificationService {
     });
 
     if (!notification) {
-      throw new Error("Unauthorized");
+      throw new Error("UNAUTHORIZED");
     }
 
     return prisma.notification.update({
@@ -65,7 +65,7 @@ export abstract class NotificationService {
     });
 
     if (!notification) {
-      throw new Error("Unauthorized");
+      throw new Error("UNAUTHORIZED");
     }
 
     return prisma.notification.update({
@@ -88,7 +88,7 @@ export abstract class NotificationService {
     });
 
     if (!notification) {
-      throw new Error("Unauthorized");
+      throw new Error("UNAUTHORIZED");
     }
 
     return prisma.notification.delete({
@@ -122,7 +122,7 @@ export abstract class NotificationService {
     });
 
     if (!notification || !notification.groupId) {
-      throw new Error("Einladung nicht gefunden");
+      throw new Error("INVITE_NOT_FOUND");
     }
 
     const group = await prisma.group.findUnique({
@@ -132,13 +132,13 @@ export abstract class NotificationService {
 
     if (!group) {
       await prisma.notification.delete({ where: { id: notification.id } });
-      throw new Error("Gruppe existiert nicht mehr");
+      throw new Error("GROUP_NOT_FOUND");
     }
 
     const alreadyMember = group.members.some((member) => member.id === user.id);
 
     if (!alreadyMember && group.members.length >= MAX_GROUP_MEMBERS) {
-      throw new Error("Die Gruppe hat die maximale Mitgliederzahl erreicht");
+      throw new Error("GROUP_FULL");
     }
 
     const [updatedGroup] = await prisma.$transaction([
