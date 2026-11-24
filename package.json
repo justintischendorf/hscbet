@@ -19,9 +19,9 @@
     "db:admin": "bun scripts/admin.ts"
   },
   "devDependencies": {
-    "oxfmt": "^0.78.0",
-    "oxlint": "^1.93.0",
-    "turbo": "^2.11.11",
+    "oxfmt": "^0.79.0",
+    "oxlint": "^1.94.0",
+    "turbo": "^2.11.13",
     "typescript": "7.0.2"
   },
   "engines": {

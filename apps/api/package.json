@@ -20,10 +20,10 @@
     "@repo/logger": "workspace:*",
     "@repo/queue": "workspace:*",
     "@repo/pubsub": "workspace:*",
-    "better-auth": "^1.7.25",
+    "better-auth": "^1.7.27",
     "elysia": "latest",
     "elysia-rate-limit": "^4.6.3",
-    "resend": "^6.38.1"
+    "resend": "^6.39.0"
   },
   "devDependencies": {
     "bun-types": "latest"
